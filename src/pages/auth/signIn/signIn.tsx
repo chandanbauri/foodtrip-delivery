@@ -2,26 +2,39 @@ import * as React from 'react';
 import {
   Box,
   Center,
-  useTheme,
   Container,
   Flex,
   Input,
   Text,
   Column,
   Button,
+  AspectRatio,
+  Image,
+  Row,
 } from 'native-base';
 import {SiginScreenProps} from '../../../navigation/root/types';
 import FocusedStatusBar from '../../../components/general/statusBar';
 import {TextInputProps} from 'react-native';
 import {Dimensions} from 'react-native';
+import {customColor} from '../../../theme';
+import {color} from 'styled-system';
 
 const {width} = Dimensions.get('window');
 function CustomInputField(props: TextInputProps) {
-  return <Input w="100%" mt={5} {...props} rounded={30} />;
+  return (
+    <Input
+      w="100%"
+      mt={5}
+      {...props}
+      rounded={30}
+      borderColor={customColor.brown}
+      borderWidth={2}
+      color={customColor.brown}
+    />
+  );
 }
 
 function SignInScreen({navigation, route}: SiginScreenProps) {
-  const {colors} = useTheme();
   return (
     <>
       <FocusedStatusBar
@@ -29,28 +42,56 @@ function SignInScreen({navigation, route}: SiginScreenProps) {
         barStyle="dark-content"
         translucent={true}
       />
-      <Center flex={1} w={width} bg="emerald.500">
+      <Center flex={1} w={width} bg={customColor.logoBg}>
         <Container w="100%">
-          <Text fontSize="4xl" color="white">
-            Sign in
-          </Text>
-          <Flex direction="column" mt={10} w="100%">
+          <Column
+            reversed
+            w="100%"
+            alignItems="flex-start"
+            justifyContent="space-between">
+            <Text fontSize="4xl" color={customColor.brown}>
+              Sign in
+            </Text>
+            <AspectRatio width="40%">
+              <Image
+                size="lg"
+                resizeMode="cover"
+                source={require('../../../assets/general/logo.png')}
+                alt="Food adda logo"
+              />
+            </AspectRatio>
+          </Column>
+          <Flex direction="column" mt={10} w="100%" justifyContent="flex-start">
             <Column alignItems="flex-start">
-              <Text color="white">Email</Text>
+              <Text color={customColor.brown} bold>
+                Email
+              </Text>
               <CustomInputField
                 placeholder="Enter Email"
-                placeholderTextColor="white"
+                placeholderTextColor={customColor.brown}
               />
             </Column>
             <Column alignItems="flex-start" mt={5}>
-              <Text color="white">Password</Text>
+              <Text color={customColor.brown} bold>
+                Password
+              </Text>
               <CustomInputField
                 placeholder="Enter password"
-                placeholderTextColor="white"
+                placeholderTextColor={customColor.brown}
               />
             </Column>
-            <Button color="emerald.400" mt={10} bg="white" rounded={30}>
-              Sign in
+            <Button
+              mt={10}
+              bg="purple.400"
+              rounded={30}
+              onPress={() => {
+                navigation.navigate('TabNav', {
+                  screen: 'home',
+                });
+              }}>
+              <Text bold fontSize={20} color="white">
+                Sign in
+              </Text>
             </Button>
           </Flex>
         </Container>
