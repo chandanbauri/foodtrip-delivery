@@ -4,6 +4,11 @@ import {TabNavigatorParamList} from './types';
 import HomeScreen from '../../pages/home';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import ProfileScreen from '../../pages/profile';
+import NotificationScreen from '../../pages/notification';
+import OrderNavigator from '../Order';
+import HelperStackNavigator from '../helper';
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>();
 
@@ -24,12 +29,17 @@ function TabNavigator() {
                 />
               );
             case 'profile':
-              iconName = focused ? 'user' : 'user-0';
+              iconName = focused ? 'user' : 'user-o';
               return <FontAwesome name={iconName} size={size} color={color} />;
+            case 'notification':
+              iconName = focused ? 'mail-open' : 'mail-open-outline';
+              return <Ionicons name={iconName} size={size} color={color} />;
           }
         },
       })}>
-      <Tab.Screen name="home" component={HomeScreen} />
+      <Tab.Screen name="notification" component={NotificationScreen} />
+      <Tab.Screen name="home" component={HelperStackNavigator} />
+      <Tab.Screen name="profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 }

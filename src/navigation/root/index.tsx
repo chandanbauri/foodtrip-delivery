@@ -4,13 +4,22 @@ import {rootStackParamList} from './types';
 import SignInScreen from '../../pages/auth/signIn';
 import {NativeBaseProvider} from 'native-base';
 import TabNavigator from '../tab';
+import {customColor} from '../../theme';
 
 const RootStack = createStackNavigator<rootStackParamList>();
 
 const RootStackNavigator = () => {
+  const config = {
+    dependencies: {
+      'linear-gradient': require('react-native-linear-gradient').default,
+    },
+  };
   return (
-    <NativeBaseProvider>
-      <RootStack.Navigator>
+    <NativeBaseProvider config={config}>
+      <RootStack.Navigator
+        screenOptions={{
+          headerLeft: () => null,
+        }}>
         <RootStack.Screen
           name="signin"
           component={SignInScreen}
