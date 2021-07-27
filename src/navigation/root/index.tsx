@@ -4,7 +4,6 @@ import {rootStackParamList} from './types';
 import SignInScreen from '../../pages/auth/signIn';
 import {NativeBaseProvider} from 'native-base';
 import TabNavigator from '../tab';
-import {customColor} from '../../theme';
 
 const RootStack = createStackNavigator<rootStackParamList>();
 

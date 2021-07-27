@@ -1,11 +1,15 @@
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {Box, Button, Divider, Row, Text} from 'native-base';
 import * as React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {CombinedNavigationProp} from '../../../navigation';
+import {DetailsScreenProps} from '../../../navigation/helper';
 import {customColor} from '../../../theme';
 
-const AcceptOrderCard: React.FunctionComponent = props => {
+const AcceptOrderCard: React.FunctionComponent = () => {
   const [isPickedUp, setIsPickedUp] = React.useState<boolean>(false);
   const [isDelivered, setIsDelivered] = React.useState<boolean>(false);
+  const navigation = useNavigation<CombinedNavigationProp>();
   return (
     <Box
       width="100%"
@@ -31,7 +35,19 @@ const AcceptOrderCard: React.FunctionComponent = props => {
         </Box>
       </Row>
       <Box w="100%" mt={4}>
-        <Row justifyContent="flex-end" alignItems="center">
+        <Row justifyContent="space-between" alignItems="center">
+          <Button
+            px={10}
+            py={3}
+            bg={customColor.brown}
+            shadow={2}
+            onPress={() => {
+              navigation.navigate('Details');
+            }}>
+            <Text fontSize="md" color="white">
+              View Details
+            </Text>
+          </Button>
           {isPickedUp ? (
             isDelivered ? (
               <Button px={10} py={3} bg="gray.300">

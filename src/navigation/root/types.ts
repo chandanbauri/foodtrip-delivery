@@ -13,3 +13,4 @@ export type SiginScreenProps = {
   route: RouteProp<rootStackParamList, 'signin'>;
   navigation: StackNavigationProp<rootStackParamList, 'signin'>;
 };
+
