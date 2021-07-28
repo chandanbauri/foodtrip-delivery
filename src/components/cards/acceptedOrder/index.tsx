@@ -44,23 +44,25 @@ const AcceptOrderCard: React.FunctionComponent = () => {
             onPress={() => {
               navigation.navigate('Details');
             }}>
-            <Text fontSize="md" color="white">
+            <Text fontSize="xs" color="white">
               View Details
             </Text>
           </Button>
           {isPickedUp ? (
             isDelivered ? (
               <Button px={10} py={3} bg="gray.300">
-                <Text fontSize="md" color="gray.800">
+                <Text fontSize="xs" color="gray.800">
                   Delivered
                 </Text>
               </Button>
             ) : (
               <Button px={10} py={3} bg="fuchsia.500" shadow={2}>
                 <Text
-                  fontSize="md"
+                  fontSize="xs"
                   color="white"
-                  onPress={() => setIsDelivered(true)}>
+                  onPress={() => {
+                    navigation.navigate('Delivery');
+                  }}>
                   Delivered
                 </Text>
               </Button>
@@ -74,7 +76,7 @@ const AcceptOrderCard: React.FunctionComponent = () => {
               onPress={() => {
                 setIsPickedUp(() => true);
               }}>
-              <Text fontSize="md" color="white">
+              <Text fontSize="xs" color="white">
                 Pick up
               </Text>
             </Button>

@@ -1,6 +1,7 @@
 package com.main_foodtrip_delivery;
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
+import com.zoontek.rnbootsplash.RNBootSplash;
 
 public class MainActivity extends ReactActivity {
 
@@ -9,11 +10,12 @@ public class MainActivity extends ReactActivity {
    * rendering of the component.
    */
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(null);
-  }
-  @Override
   protected String getMainComponentName() {
     return "main_foodtrip_delivery";
+  }
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    RNBootSplash.init(R.drawable.bootsplash, MainActivity.this);
   }
 }

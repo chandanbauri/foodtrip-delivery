@@ -8,9 +8,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const {width, height} = Dimensions.get('window');
 function ProfileScreen({navigation, route}: ProfileScreenProps) {
-  const options = Array.apply(null, Array(6)).map(
-    (item, index: number) => `Item ${index}`,
-  );
   return (
     <Container>
       <FocusedStatusBar
@@ -50,23 +47,30 @@ function ProfileScreen({navigation, route}: ProfileScreenProps) {
             flex={1}
             flexGrow={1}
             bg="white"
-            pl={8}
+            pl={4}
             py={5}
             shadow={5}
             roundedTopLeft={20}
             roundedTopRight={20}
             style={{transform: [{translateY: -22}]}}>
-            <FlatList
-              data={options}
-              keyExtractor={item => item}
-              renderItem={({item}) => (
-                <Text
-                  bold
-                  fontSize="lg"
-                  my={4}
-                  color="gray.700">{`${item}`}</Text>
-              )}
-            />
+            <Text fontWeight="700" fontSize="2xl" color={customColor.brown}>
+              Name
+            </Text>
+            <Text color={customColor.gray} ml={2} my={3}>
+              Chandan Bauri
+            </Text>
+            <Text fontWeight="700" fontSize="2xl" color={customColor.brown}>
+              Email
+            </Text>
+            <Text color={customColor.gray} ml={2} my={3}>
+              email@example.com
+            </Text>
+            <Text fontWeight="700" fontSize="2xl" color={customColor.brown}>
+              Phone
+            </Text>
+            <Text color={customColor.gray} ml={2} my={3}>
+              +91 9876543210
+            </Text>
           </Box>
         </Column>
       </Box>
