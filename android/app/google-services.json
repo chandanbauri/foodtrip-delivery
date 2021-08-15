@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1093723294271",
+    "project_id": "foodaddadelivery-9d487",
+    "storage_bucket": "foodaddadelivery-9d487.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093723294271:android:6b620dacb9a802ea26868a",
+        "android_client_info": {
+          "package_name": "com.main_foodtrip_delivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1093723294271-mgj8cd9su91ugtjo0ncmhsvbudsl3t2e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMPKZtGP58qY4y_5klKRcSksVeKjehJwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1093723294271-mgj8cd9su91ugtjo0ncmhsvbudsl3t2e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

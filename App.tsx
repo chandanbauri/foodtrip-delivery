@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import RootStackNavigator from './src/navigation/root';
 import {enableScreens} from 'react-native-screens';
 import RNBootSplash from 'react-native-bootsplash';
+import {AuthProvider} from './src/contexts/auth';
 
 const App = () => {
   React.useEffect(() => {
@@ -10,9 +11,11 @@ const App = () => {
   });
   enableScreens();
   return (
-    <NavigationContainer>
-      <RootStackNavigator />
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <RootStackNavigator />
+      </NavigationContainer>
+    </AuthProvider>
   );
 };
 

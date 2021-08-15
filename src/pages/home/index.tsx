@@ -15,6 +15,8 @@ import OrderCard from '../../components/cards/Order';
 import FocusedStatusBar from '../../components/general/statusBar';
 import {HomeScreenProps} from '../../navigation/tab/types';
 import {customColor} from '../../theme';
+import {test} from '../../utilities';
+import functions from '@react-native-firebase/functions';
 
 const {height, width} = Dimensions.get('window');
 const HomeScreen = ({navigation, route}: HomeScreenProps) => {
@@ -24,6 +26,15 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
   const data1 = Array.apply(null, Array(10)).map(
     (item, index) => `item ${index + 11}`,
   );
+  const cloudFunction = async () => {
+    await functions()
+      .httpsCallable('test')()
+      .then(res => console.log(res))
+      .catch(error => console.log(error));
+  };
+  React.useEffect(() => {
+    cloudFunction();
+  });
   return (
     <Box width={width}>
       <FocusedStatusBar
