@@ -1,5 +1,6 @@
 import {RouteProp, NavigatorScreenParams} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {CombinedNavigationProp} from '..';
 import {TabNavigatorParamList} from '../tab/types';
 
 export type rootStackParamList = {
@@ -11,6 +12,6 @@ export type rootStackParamList = {
 
 export type SiginScreenProps = {
   route: RouteProp<rootStackParamList, 'signin'>;
-  navigation: StackNavigationProp<rootStackParamList, 'signin'>;
+  navigation: CombinedNavigationProp;
 };
 

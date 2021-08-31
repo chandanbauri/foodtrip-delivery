@@ -1,42 +1,30 @@
-import {
-  Box,
-  Center,
-  Column,
-  Container,
-  FlatList,
-  Flex,
-  Text,
-} from 'native-base';
+import {Box, FlatList, Text} from 'native-base';
 import * as React from 'react';
 import {ActivityIndicator, Dimensions, RefreshControl} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import AcceptOrderCard from '../../components/cards/acceptedOrder';
-import OrderCard from '../../components/cards/Order';
 import FocusedStatusBar from '../../components/general/statusBar';
 import {HomeScreenProps} from '../../navigation/tab/types';
-import {customColor} from '../../theme';
-import {addFCMtoke, fetchRequests, getFCMToken, test} from '../../utilities';
-import functions from '@react-native-firebase/functions';
 import {useIsFocused} from '@react-navigation/native';
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
+import {customColor} from '../../theme';
+import RejectedOrder from '../../components/cards/rejected';
 const {height, width} = Dimensions.get('window');
-const HomeScreen = ({navigation, route}: HomeScreenProps) => {
+const RejectedOrders = ({navigation, route}: HomeScreenProps) => {
   const [initializing, setInitializing] = React.useState<boolean>(true);
-  const [refreshing, setRefreshing] = React.useState(false);
   const [list, setList] = React.useState<Array<any>>([]);
+  const [refreshing, setRefreshing] = React.useState(false);
   let IsFocused = useIsFocused();
   const getOrders = async () => {
     setInitializing(true);
-    setList([]);
     try {
       let res = await firebase
         .app('SECONDARY_APP')
         .firestore()
         .collection('deliveryPartners')
         .doc(auth().currentUser?.uid)
-        .collection('requests')
+        .collection('rejected')
         .get();
       if (res.size >= 1) {
         res.forEach(async item => {
@@ -62,7 +50,6 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
       throw error;
     }
   };
-
   const onRefresh = React.useCallback(async () => {
     // setInitializing(true);
     setList([]);
@@ -72,7 +59,7 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
         .firestore()
         .collection('deliveryPartners')
         .doc(auth().currentUser?.uid)
-        .collection('requests')
+        .collection('rejected')
         .get();
       if (res.size >= 1) {
         res.forEach(async item => {
@@ -99,18 +86,6 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
       throw error;
     }
   }, [refreshing]);
-  // const saveFCMToken = async () => {
-  //   if (IsFocused) {
-  //     try {
-  //       let res = await addFCMtoke({FCM: await getFCMToken()});
-  //       console.log(res);
-  //     } catch (error) {
-  //       throw error;
-  //     }
-  //   }
-
-  //   return;
-  // };
   React.useEffect(() => {
     if (IsFocused) {
       getOrders().catch(error => {
@@ -118,14 +93,7 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
       });
     }
     return;
-  }, []);
-
-  // React.useEffect(() => {
-  //   saveFCMToken().catch(error => {
-  //     throw error;
-  //   });
-  //   return;
-  // }, []);
+  }, [IsFocused]);
   if (initializing)
     return (
       <Box alignItems="center" justifyContent="center" flex={1}>
@@ -145,19 +113,19 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
         translucent={true}
       />
       {/* <Container w={width} h={height * 0.1}>
-        <Flex w={width} justifyContent="center" alignItems="center">
-          <Text bold fontSize="2xl" color={customColor.brown}>
-            Orders
-          </Text>
-        </Flex>
-      </Container> */}
+          <Flex w={width} justifyContent="center" alignItems="center">
+            <Text bold fontSize="2xl" color={customColor.brown}>
+              Orders
+            </Text>
+          </Flex>
+        </Container> */}
       <FlatList
         data={list}
         keyExtractor={(item, index) => `${index}`}
-        renderItem={({item}) => <OrderCard {...item} />}
+        renderItem={({item}) => <RejectedOrder {...item} />}
         ListEmptyComponent={
           <Box mt={30} alignItems="center" justifyContent="center">
-            <Text color={customColor.brown}>No pending orders available</Text>
+            <Text color={customColor.brown}>No on going orders available</Text>
           </Box>
         }
         refreshControl={
@@ -172,4 +140,4 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
   );
 };
 
-export default HomeScreen;
+export default RejectedOrders;

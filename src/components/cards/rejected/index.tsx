@@ -8,7 +8,7 @@ import {DetailsScreenProps} from '../../../navigation/helper';
 import {customColor} from '../../../theme';
 import {onPickUp, updateOrder} from '../../../utilities';
 
-const AcceptOrderCard: React.FunctionComponent = (props: any) => {
+const RejectedOrder: React.FunctionComponent = (props: any) => {
   const navigation = useNavigation<CombinedNavigationProp>();
   return (
     <Box width="100%" flexGrow={1} rounded={20} my={3} px={4}>
@@ -27,7 +27,7 @@ const AcceptOrderCard: React.FunctionComponent = (props: any) => {
             </Text>
           </Box>
         </Row>
-        <Box w="100%" mt={4}>
+        {/* <Box w="100%" mt={4}>
           <Row justifyContent="space-between" alignItems="center">
             <Button
               px={10}
@@ -54,18 +54,16 @@ const AcceptOrderCard: React.FunctionComponent = (props: any) => {
                   </Text>
                 </Button>
               ) : (
-                <Button
-                  px={10}
-                  py={3}
-                  bg="fuchsia.500"
-                  shadow={2}
-                  onPress={() => {
-                    navigation.navigate('home', {
-                      screen: 'Delivery',
-                      params: {order: props},
-                    });
-                  }}>
-                  <Text fontSize="xs" color="white">
+                <Button px={10} py={3} bg="fuchsia.500" shadow={2}>
+                  <Text
+                    fontSize="xs"
+                    color="white"
+                    onPress={() => {
+                      navigation.navigate('home', {
+                        screen: 'Delivery',
+                        params: {order: props},
+                      });
+                    }}>
                     Delivered
                   </Text>
                 </Button>
@@ -80,13 +78,12 @@ const AcceptOrderCard: React.FunctionComponent = (props: any) => {
                   // updateOrder({state: {isPickedUp, orderId: props.id}});
                   // setIsPickedUp(() => true);
                   try {
-                    let res = await onPickUp({
+                    await onPickUp({
                       user: props.useDetails,
                       orderId: props.docId,
                       activeId: props.reqId,
                     });
-                    // props.onChange();
-                    console.log(res);
+                    props.onChange();
                   } catch (error) {
                     Alert.alert('Opps !!', 'Some thing went wrong', [
                       {
@@ -103,10 +100,10 @@ const AcceptOrderCard: React.FunctionComponent = (props: any) => {
               </Button>
             )}
           </Row>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );
 };
 
-export default AcceptOrderCard;
+export default RejectedOrder;

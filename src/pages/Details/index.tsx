@@ -16,6 +16,9 @@ import {Pressable} from 'react-native';
 import FocusedStatusBar from '../../components/general/statusBar';
 
 export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
+  const info = React.useRef<any>();
+  let {order} = route.params;
+  console.log(order);
   React.useLayoutEffect(() => {
     navigation?.setOptions({
       headerLeft: () => (
@@ -33,13 +36,13 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
   let data = Array.apply(null, Array<string>(5)).map(
     (item, index: number) => `item-${index}`,
   );
-  const FoodItem = () => (
+  const FoodItem = (props: any) => (
     <Box my={1} px={2} py={2}>
       <Text fontSize="xl" fontWeight="700" color={customColor.brown}>
-        Food Name
+        {props.name}
       </Text>
       <Text fontSize="xs" color={customColor.gray}>
-        Food Description
+        {props.desc}
       </Text>
     </Box>
   );
@@ -49,10 +52,10 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
         <Row w="100%" justifyContent="space-between" alignItems="center">
           <Box>
             <Text fontSize="2xl" fontWeight="700" color={customColor.brown}>
-              Restraunt Name
+              {`${order.restaurantDetails.name}`}
             </Text>
             <Text fontSize="xs" mt={2} color={customColor.gray}>
-              Road 5, Dishergarh , Asansol , Paschim Burdwan
+              {`${order.restaurantDetails.address}`}
             </Text>
           </Box>
           <Pressable>
@@ -68,10 +71,10 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
         <Row w="100%" justifyContent="space-between" alignItems="center">
           <Box>
             <Text fontSize="2xl" fontWeight="700" color={customColor.brown}>
-              user 's Location
+              {`${order.userDetails.name}`}
             </Text>
             <Text fontSize="xs" mt={2} color={customColor.gray}>
-              Road 5, Dishergarh , Asansol , Paschim Burdwan
+              {`${order.userDetails.deliveryAddress}`}
             </Text>
           </Box>
           <Pressable>
@@ -98,7 +101,7 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
           Item Total
         </Text>
         <Text color={customColor.brown} fontWeight="700">
-          300
+          {`${order.amount}`}
         </Text>
       </Row>
       <Row justifyContent="space-between" mb={2}>
@@ -115,14 +118,16 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
           Grand total
         </Text>
         <Text color={customColor.brown} fontWeight="700">
-          300
+          {`${order.amount}`}
         </Text>
       </Row>
       <Box mt={5}>
         <Text color={customColor.brown} fontWeight="700" fontSize="xl" mb={1}>
           ORDER ID
         </Text>
-        <Text color={customColor.gray}>#mdskkfmsaldasad</Text>
+        <Text
+          color={customColor.gray}
+          textTransform="uppercase">{`#${order.docId}`}</Text>
         <Text
           color={customColor.brown}
           fontWeight="700"
@@ -131,7 +136,9 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
           mb={1}>
           Payment
         </Text>
-        <Text color={customColor.gray}>COD</Text>
+        <Text color={customColor.gray}>{`${
+          order.paymentMethod == 'RAZORPAY' ? 'ONLINE' : order.paymentMethod
+        }`}</Text>
       </Box>
     </Box>
   );
@@ -144,11 +151,11 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
           translucent={true}
         />
         <FlatList
-          data={data}
+          data={order.items}
           ListHeaderComponent={() => <ListHeader />}
           ListFooterComponent={() => <ListFooter />}
-          keyExtractor={item => item}
-          renderItem={() => <FoodItem />}
+          keyExtractor={(item, index) => `${index}`}
+          renderItem={({item}) => <FoodItem {...item} />}
           ItemSeparatorComponent={() => <Divider />}
           showsVerticalScrollIndicator={false}
         />

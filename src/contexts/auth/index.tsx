@@ -1,5 +1,10 @@
 import * as React from 'react';
 import auth from '@react-native-firebase/auth';
+import firebase from '@react-native-firebase/app';
+
+// async function intializeSecondaryApp() {
+//   await
+// }
 type contextProps = {
   user: any;
   setUser: React.Dispatch<React.SetStateAction<any>>;
@@ -27,7 +32,11 @@ export const AuthProvider: React.FunctionComponent = ({children}) => {
     }
   };
   const logOut = async () => {
-    await auth().signOut();
+    try {
+      await auth().signOut();
+    } catch (error) {
+      throw error;
+    }
   };
   return (
     <AuthContext.Provider

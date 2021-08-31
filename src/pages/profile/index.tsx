@@ -1,13 +1,23 @@
-import {Box, Center, Column, Container, FlatList, Text} from 'native-base';
+import {
+  Box,
+  Button,
+  Center,
+  Column,
+  Container,
+  FlatList,
+  Text,
+} from 'native-base';
 import * as React from 'react';
 import {Dimensions} from 'react-native';
 import FocusedStatusBar from '../../components/general/statusBar';
 import {ProfileScreenProps} from '../../navigation/tab/types';
 import {customColor} from '../../theme';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {AuthContext} from '../../contexts/auth';
 
 const {width, height} = Dimensions.get('window');
 function ProfileScreen({navigation, route}: ProfileScreenProps) {
+  const Auth = React.useContext(AuthContext);
   return (
     <Container>
       <FocusedStatusBar
@@ -47,7 +57,7 @@ function ProfileScreen({navigation, route}: ProfileScreenProps) {
             flex={1}
             flexGrow={1}
             bg="white"
-            pl={4}
+            px={4}
             py={5}
             shadow={5}
             roundedTopLeft={20}
@@ -71,6 +81,12 @@ function ProfileScreen({navigation, route}: ProfileScreenProps) {
             <Text color={customColor.gray} ml={2} my={3}>
               +91 9876543210
             </Text>
+            <Button
+              onPress={() => {
+                Auth?.logOut();
+              }}>
+              <Text>Log out</Text>
+            </Button>
           </Box>
         </Column>
       </Box>
