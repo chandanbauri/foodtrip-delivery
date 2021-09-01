@@ -5,12 +5,13 @@ import {customColor} from '../../theme';
 import Feather from 'react-native-vector-icons/Feather';
 import FocusedStatusBar from '../../components/general/statusBar';
 import {onDeliveryComplete} from '../../utilities';
-import {Alert} from 'react-native';
+import {ActivityIndicator, Alert} from 'react-native';
 
 function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
   const {order} = route.params;
   const [paymentRecived, serPaymentRecieved] = React.useState<boolean>(false);
   // console.log(order);
+  const [initializing, setInitializing] = React.useState<boolean>(false);
   let date = new Date();
   React.useLayoutEffect(() => {
     navigation?.setOptions({
@@ -25,6 +26,17 @@ function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
       ),
     });
   });
+  if (initializing)
+    return (
+      <Box alignItems="center" justifyContent="center" flex={1}>
+        <FocusedStatusBar
+          backgroundColor="transparent"
+          barStyle="dark-content"
+          translucent={true}
+        />
+        <ActivityIndicator color={customColor.brown} size={50} />
+      </Box>
+    );
   return (
     <Box px={3}>
       <FocusedStatusBar
@@ -76,6 +88,7 @@ function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
           onPress={async () => {
             if (paymentRecived || order.paymentMethod == 'RAZORPAY') {
               try {
+                setInitializing(true);
                 let res = await onDeliveryComplete({
                   orderId: order.docId,
                   activeId: order.reqId,
@@ -83,6 +96,7 @@ function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
                 let response = JSON.parse(res.data);
                 // console.log(response);
                 if (response.succees) {
+                  setInitializing(false);
                   Alert.alert(
                     'Hurray !!!',
                     'You Have Successfully Delivered Happiness',
@@ -97,6 +111,7 @@ function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
                   );
                 }
               } catch (error) {
+                setInitializing(false);
                 throw error;
               }
             } else {

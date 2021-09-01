@@ -38,6 +38,7 @@ const OrderCard: React.FunctionComponent<any> = (props: any) => {
               bg="green.400"
               onPress={async () => {
                 try {
+                  if (props.onAction) props.onAction();
                   let res = await acceptOrder({
                     orderId: props.docId,
                     user: {
@@ -49,6 +50,7 @@ const OrderCard: React.FunctionComponent<any> = (props: any) => {
                   });
                   let parsed = JSON.parse(res.data);
                   // console.log(parsed);
+                  if (props.onAction) props.onActionComplete();
                   if (parsed.succees) {
                     Alert.alert(
                       'Order Accepted',
@@ -75,6 +77,7 @@ const OrderCard: React.FunctionComponent<any> = (props: any) => {
                     );
                   }
                 } catch (error) {
+                  if (props.onAction) props.onActionComplete();
                   Alert.alert(
                     'There is some issue',
                     'Please try again after some time',
@@ -98,16 +101,19 @@ const OrderCard: React.FunctionComponent<any> = (props: any) => {
               bg="red.500"
               onPress={async () => {
                 try {
+                  if (props.onAction) props.onAction();
                   let res = await rejectOrder({
                     orderId: props.docId,
                     reqId: props.reqId,
                   });
                   if (res) {
+                    if (props.onAction) props.onActionComplete();
                     // console.log(JSON.parse(res.data));
-
                     // onChange();
+                    Alert.alert('The Request is Rejected','')
                   }
                 } catch (error) {
+                  if (props.onAction) props.onActionComplete();
                   throw error;
                 }
               }}>

@@ -18,10 +18,12 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
   const [initializing, setInitializing] = React.useState<boolean>(true);
   const [refreshing, setRefreshing] = React.useState(false);
   const [list, setList] = React.useState<Array<any>>([]);
+  const startInitializing = () => setInitializing(true);
+  const stopInitializing = () => setInitializing(false);
   let IsFocused = useIsFocused();
   const getOrders = async () => {
     setInitializing(true);
-    setList([]);
+    // setList([]);
     try {
       let res = await firebase
         .app('SECONDARY_APP')
@@ -153,7 +155,13 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
       <FlatList
         data={list}
         keyExtractor={(item, index) => `${index}`}
-        renderItem={({item}) => <OrderCard {...item} />}
+        renderItem={({item}) => (
+          <OrderCard
+            {...item}
+            onAction={startInitializing}
+            onActionComplete={stopInitializing}
+          />
+        )}
         ListEmptyComponent={
           <Box mt={30} alignItems="center" justifyContent="center">
             <Text color={customColor.brown}>No pending orders available</Text>

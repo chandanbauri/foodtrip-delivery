@@ -8,7 +8,8 @@ import {DetailsScreenProps} from '../../../navigation/helper';
 import {customColor} from '../../../theme';
 import {onPickUp, updateOrder} from '../../../utilities';
 
-const DeliveredOrder: React.FunctionComponent = (props: any) => {
+const DeliveredOrder = (props: any) => {
+  const {order} = props;
   const navigation = useNavigation<CombinedNavigationProp>();
   return (
     <Box width="100%" flexGrow={1} rounded={20} my={3} px={4}>
@@ -20,10 +21,10 @@ const DeliveredOrder: React.FunctionComponent = (props: any) => {
           <Divider orientation="vertical" bgColor={customColor.brown} />
           <Box ml={6}>
             <Text bold fontSize="lg" color="gray.500">
-              {props.restaurantDetails.name ?? 'name'}
+              {order.restaurantDetails.name ?? 'name'}
             </Text>
             <Text color="gray.400" fontSize="sm" mt={2} maxWidth={200}>
-              {props.restaurantDetails.address ?? 'address'}
+              {order.restaurantDetails.address ?? 'address'}
             </Text>
           </Box>
         </Row>
@@ -38,7 +39,7 @@ const DeliveredOrder: React.FunctionComponent = (props: any) => {
                 navigation.navigate('home', {
                   screen: 'Details',
                   params: {
-                    order: props,
+                    order: order,
                   },
                 });
               }}>

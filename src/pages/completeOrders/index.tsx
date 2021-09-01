@@ -15,6 +15,8 @@ const CompletedOrders = ({navigation, route}: HomeScreenProps) => {
   const [initializing, setInitializing] = React.useState<boolean>(true);
   const [list, setList] = React.useState<Array<any>>([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const startInitializing = () => setInitializing(true);
+  const stopInitializing = () => setInitializing(false);
   let IsFocused = useIsFocused();
   const getOrders = async () => {
     setInitializing(true);
@@ -136,7 +138,13 @@ const CompletedOrders = ({navigation, route}: HomeScreenProps) => {
       <FlatList
         data={list}
         keyExtractor={(item, index) => `${index}`}
-        renderItem={({item}) => <DeliveredOrder {...item} />}
+        renderItem={({item}) => (
+          <DeliveredOrder
+            order={item}
+            onAction={startInitializing}
+            onActionComplete={stopInitializing}
+          />
+        )}
         ListEmptyComponent={
           <Box mt={30} alignItems="center" justifyContent="center">
             <Text color={customColor.brown}>No on going orders available</Text>

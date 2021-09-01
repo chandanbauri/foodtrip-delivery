@@ -15,6 +15,8 @@ const RejectedOrders = ({navigation, route}: HomeScreenProps) => {
   const [initializing, setInitializing] = React.useState<boolean>(true);
   const [list, setList] = React.useState<Array<any>>([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const startInitializing = () => setInitializing(true);
+  const stopInitializing = () => setInitializing(false);
   let IsFocused = useIsFocused();
   const getOrders = async () => {
     setInitializing(true);
@@ -122,7 +124,13 @@ const RejectedOrders = ({navigation, route}: HomeScreenProps) => {
       <FlatList
         data={list}
         keyExtractor={(item, index) => `${index}`}
-        renderItem={({item}) => <RejectedOrder {...item} />}
+        renderItem={({item}) => (
+          <RejectedOrder
+            {...item}
+            onAction={startInitializing}
+            onActionComplete={stopInitializing}
+          />
+        )}
         ListEmptyComponent={
           <Box mt={30} alignItems="center" justifyContent="center">
             <Text color={customColor.brown}>No on going orders available</Text>

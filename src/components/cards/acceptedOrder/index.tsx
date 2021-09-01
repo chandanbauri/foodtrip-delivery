@@ -8,7 +8,8 @@ import {DetailsScreenProps} from '../../../navigation/helper';
 import {customColor} from '../../../theme';
 import {onPickUp, updateOrder} from '../../../utilities';
 
-const AcceptOrderCard: React.FunctionComponent = (props: any) => {
+const AcceptOrderCard = (props: any) => {
+  const {order} = props
   const navigation = useNavigation<CombinedNavigationProp>();
   return (
     <Box width="100%" flexGrow={1} rounded={20} my={3} px={4}>
@@ -20,10 +21,10 @@ const AcceptOrderCard: React.FunctionComponent = (props: any) => {
           <Divider orientation="vertical" bgColor={customColor.brown} />
           <Box ml={6}>
             <Text bold fontSize="lg" color="gray.500">
-              {props.restaurantDetails.name}
+              {order.restaurantDetails.name}
             </Text>
             <Text color="gray.400" fontSize="sm" mt={2} maxWidth={200}>
-              {props.restaurantDetails.address}
+              {order.restaurantDetails.address}
             </Text>
           </Box>
         </Row>
@@ -38,7 +39,7 @@ const AcceptOrderCard: React.FunctionComponent = (props: any) => {
                 navigation.navigate('home', {
                   screen: 'Details',
                   params: {
-                    order: props,
+                    order: order,
                   },
                 });
               }}>
@@ -46,8 +47,8 @@ const AcceptOrderCard: React.FunctionComponent = (props: any) => {
                 View Details
               </Text>
             </Button>
-            {props.isPickedUp ? (
-              props.isDelivered ? (
+            {order.isPickedUp ? (
+              order.isDelivered ? (
                 <Button px={10} py={3} bg="gray.300">
                   <Text fontSize="xs" color="gray.800">
                     Delivered
@@ -62,7 +63,7 @@ const AcceptOrderCard: React.FunctionComponent = (props: any) => {
                   onPress={() => {
                     navigation.navigate('home', {
                       screen: 'Delivery',
-                      params: {order: props},
+                      params: {order: order},
                     });
                   }}>
                   <Text fontSize="xs" color="white">
@@ -80,14 +81,19 @@ const AcceptOrderCard: React.FunctionComponent = (props: any) => {
                   // updateOrder({state: {isPickedUp, orderId: props.id}});
                   // setIsPickedUp(() => true);
                   try {
+                    if (props.onAction) props.onAction();
                     let res = await onPickUp({
-                      user: props.useDetails,
-                      orderId: props.docId,
-                      activeId: props.reqId,
+                      user: order.useDetails,
+                      orderId: order.docId,
+                      activeId: order.reqId,
                     });
+                    if (res) {
+                      if (props.onActionComplete) props.onActionComplete();
+                    }
                     // props.onChange();
                     // console.log(res);
                   } catch (error) {
+                    if (props.onActionComplete) props.onActionComplete();
                     Alert.alert('Opps !!', 'Some thing went wrong', [
                       {
                         text: 'Ok',
