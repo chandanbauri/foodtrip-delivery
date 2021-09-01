@@ -71,7 +71,7 @@ const RejectedOrders = ({navigation, route}: HomeScreenProps) => {
             .doc(data.orderId)
             .get();
           let index = list.findIndex(item => item.docId == blob.id);
-          console.log(index);
+          // console.log(index);
           if (index == -1)
             setList(prev => {
               return [

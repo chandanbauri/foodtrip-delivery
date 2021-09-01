@@ -1,26 +1,18 @@
-import {
-  Box,
-  Center,
-  Column,
-  Container,
-  FlatList,
-  Flex,
-  Text,
-} from 'native-base';
+import {Box, FlatList, Text} from 'native-base';
 import * as React from 'react';
 import {ActivityIndicator, Dimensions, RefreshControl} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import AcceptOrderCard from '../../components/cards/acceptedOrder';
+
 import OrderCard from '../../components/cards/Order';
 import FocusedStatusBar from '../../components/general/statusBar';
 import {HomeScreenProps} from '../../navigation/tab/types';
 import {customColor} from '../../theme';
 import {addFCMtoke, fetchRequests, getFCMToken, test} from '../../utilities';
-import functions from '@react-native-firebase/functions';
 import {useIsFocused} from '@react-navigation/native';
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
+import {requestNotificationPermission} from '../../utilities/permissions/permissions';
+
 const {height, width} = Dimensions.get('window');
 const HomeScreen = ({navigation, route}: HomeScreenProps) => {
   const [initializing, setInitializing] = React.useState<boolean>(true);
@@ -64,7 +56,7 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
   };
 
   const onRefresh = React.useCallback(async () => {
-    // setInitializing(true);
+    setInitializing(true);
     setList([]);
     try {
       let res = await firebase
@@ -84,7 +76,7 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
             .doc(data.orderId)
             .get();
           let index = list.findIndex(item => item.docId == blob.id);
-          console.log(index);
+          // console.log(index);
           if (index == -1)
             setList(prev => {
               return [
@@ -99,18 +91,19 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
       throw error;
     }
   }, [refreshing]);
-  // const saveFCMToken = async () => {
-  //   if (IsFocused) {
-  //     try {
-  //       let res = await addFCMtoke({FCM: await getFCMToken()});
-  //       console.log(res);
-  //     } catch (error) {
-  //       throw error;
-  //     }
-  //   }
+  const saveFCMToken = async () => {
+    if (IsFocused) {
+      try {
+        let token = await getFCMToken();
+        // console.log('FCM token:', token);
+        await addFCMtoke({FCM: token});
+      } catch (error) {
+        throw error;
+      }
+    }
 
-  //   return;
-  // };
+    return;
+  };
   React.useEffect(() => {
     if (IsFocused) {
       getOrders().catch(error => {
@@ -118,14 +111,20 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
       });
     }
     return;
+  }, [IsFocused]);
+
+  React.useEffect(() => {
+    saveFCMToken().catch(error => {
+      throw error;
+    });
+    return;
   }, []);
 
-  // React.useEffect(() => {
-  //   saveFCMToken().catch(error => {
-  //     throw error;
-  //   });
-  //   return;
-  // }, []);
+  React.useEffect(() => {
+    requestNotificationPermission().catch(error => {
+      throw error;
+    });
+  }, []);
   if (initializing)
     return (
       <Box alignItems="center" justifyContent="center" flex={1}>

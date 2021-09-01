@@ -86,7 +86,7 @@ const AcceptOrderCard: React.FunctionComponent = (props: any) => {
                       activeId: props.reqId,
                     });
                     // props.onChange();
-                    console.log(res);
+                    // console.log(res);
                   } catch (error) {
                     Alert.alert('Opps !!', 'Some thing went wrong', [
                       {

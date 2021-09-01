@@ -10,7 +10,7 @@ import {Alert} from 'react-native';
 function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
   const {order} = route.params;
   const [paymentRecived, serPaymentRecieved] = React.useState<boolean>(false);
-  console.log(order);
+  // console.log(order);
   let date = new Date();
   React.useLayoutEffect(() => {
     navigation?.setOptions({
@@ -81,7 +81,7 @@ function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
                   activeId: order.reqId,
                 });
                 let response = JSON.parse(res.data);
-                console.log(response);
+                // console.log(response);
                 if (response.succees) {
                   Alert.alert(
                     'Hurray !!!',

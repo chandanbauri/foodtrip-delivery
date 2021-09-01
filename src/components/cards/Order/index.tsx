@@ -48,7 +48,7 @@ const OrderCard: React.FunctionComponent<any> = (props: any) => {
                     reqId: props.reqId,
                   });
                   let parsed = JSON.parse(res.data);
-                  console.log(parsed);
+                  // console.log(parsed);
                   if (parsed.succees) {
                     Alert.alert(
                       'Order Accepted',
@@ -103,7 +103,7 @@ const OrderCard: React.FunctionComponent<any> = (props: any) => {
                     reqId: props.reqId,
                   });
                   if (res) {
-                    console.log(JSON.parse(res.data));
+                    // console.log(JSON.parse(res.data));
 
                     // onChange();
                   }

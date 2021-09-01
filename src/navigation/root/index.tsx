@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Alert} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {rootStackParamList} from './types';
 import SignInScreen from '../../pages/auth/signIn';
@@ -7,6 +8,8 @@ import TabNavigator from '../tab';
 import {AuthContext} from '../../contexts/auth';
 import auth from '@react-native-firebase/auth';
 import firebase from '@react-native-firebase/app';
+import messaging from '@react-native-firebase/messaging';
+
 const RootStack = createStackNavigator<rootStackParamList>();
 const credentials = {
   apiKey: 'AIzaSyBMmVYbIT0li0iIFAQyqesI0XgxBplY7K4',
@@ -50,6 +53,42 @@ const RootStackNavigator = () => {
     let subscribe = auth().onAuthStateChanged(onAuthStateChnage);
     return subscribe;
   });
+  React.useEffect(() => {
+    // Listining for Foreground messages
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      const message = remoteMessage;
+      if (message.notification?.title)
+        Alert.alert(message.notification?.title, message.notification?.body);
+    });
+
+    return unsubscribe;
+  });
+
+  React.useEffect(() => {
+    // Assume a message-notification contains a "type" property in the data payload of the screen to open
+
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      // console.log(
+      //   'Notification caused app to open from background state:',
+      //   remoteMessage.notification,
+      // );
+      // navigation.navigate(remoteMessage.data.type);
+    });
+
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          // console.log(
+          //   'Notification caused app to open from quit state:',
+          //   remoteMessage.notification,
+          // );
+          // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+        }
+        // setLoading(false);
+      });
+  }, []);
   return (
     <NativeBaseProvider config={config}>
       <RootStack.Navigator

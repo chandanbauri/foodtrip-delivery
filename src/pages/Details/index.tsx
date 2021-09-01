@@ -18,7 +18,7 @@ import FocusedStatusBar from '../../components/general/statusBar';
 export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
   const info = React.useRef<any>();
   let {order} = route.params;
-  console.log(order);
+  // console.log(order);
   React.useLayoutEffect(() => {
     navigation?.setOptions({
       headerLeft: () => (
