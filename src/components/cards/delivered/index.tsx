@@ -21,10 +21,10 @@ const DeliveredOrder = (props: any) => {
           <Divider orientation="vertical" bgColor={customColor.brown} />
           <Box ml={6}>
             <Text bold fontSize="lg" color="gray.500">
-              {order.restaurantDetails.name ?? 'name'}
+              {order.restaurantDetails.name.slice(0, 20) ?? 'name'}
             </Text>
             <Text color="gray.400" fontSize="sm" mt={2} maxWidth={200}>
-              {order.restaurantDetails.address ?? 'address'}
+              {order.restaurantDetails.address.slice(0, 20) ?? 'address'}
             </Text>
           </Box>
         </Row>

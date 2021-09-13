@@ -20,10 +20,10 @@ const RejectedOrder: React.FunctionComponent = (props: any) => {
           <Divider orientation="vertical" bgColor={customColor.brown} />
           <Box ml={6}>
             <Text bold fontSize="lg" color="gray.500">
-              {props.restaurantDetails.name}
+              {props.restaurantDetails.name.slice(0, 20)}
             </Text>
             <Text color="gray.400" fontSize="sm" mt={2} maxWidth={200}>
-              {props.restaurantDetails.address}
+              {props.restaurantDetails.address.slice(0, 20)}
             </Text>
           </Box>
         </Row>
