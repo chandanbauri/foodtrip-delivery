@@ -9,7 +9,7 @@ import {customColor} from '../../../theme';
 import {onPickUp, updateOrder} from '../../../utilities';
 
 const AcceptOrderCard = (props: any) => {
-  const {order} = props
+  const {order} = props;
   const navigation = useNavigation<CombinedNavigationProp>();
   return (
     <Box width="100%" flexGrow={1} rounded={20} my={3} px={4}>
@@ -89,6 +89,20 @@ const AcceptOrderCard = (props: any) => {
                     });
                     if (res) {
                       if (props.onActionComplete) props.onActionComplete();
+                      Alert.alert(
+                        'Order Picked up',
+                        'order picked up completed',
+                        [
+                          {
+                            text: 'ok',
+                            onPress: () => {
+                              if (props.refresh) {
+                                props.refresh();
+                              }
+                            },
+                          },
+                        ],
+                      );
                     }
                     // props.onChange();
                     // console.log(res);

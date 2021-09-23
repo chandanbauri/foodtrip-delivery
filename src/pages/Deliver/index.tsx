@@ -6,6 +6,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import FocusedStatusBar from '../../components/general/statusBar';
 import {onDeliveryComplete} from '../../utilities';
 import {ActivityIndicator, Alert} from 'react-native';
+import Loader from '../../components/general/Loader';
 
 function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
   const {order} = route.params;
@@ -26,17 +27,7 @@ function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
       ),
     });
   });
-  if (initializing)
-    return (
-      <Box alignItems="center" justifyContent="center" flex={1}>
-        <FocusedStatusBar
-          backgroundColor="transparent"
-          barStyle="dark-content"
-          translucent={true}
-        />
-        <ActivityIndicator color={customColor.brown} size={50} />
-      </Box>
-    );
+  if (initializing) return <Loader />;
   return (
     <Box px={3}>
       <FocusedStatusBar

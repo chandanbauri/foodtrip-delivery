@@ -7,7 +7,9 @@ import firebase from '@react-native-firebase/app';
 // }
 type contextProps = {
   user: any;
+  state: boolean;
   setUser: React.Dispatch<React.SetStateAction<any>>;
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
   login: (
     email: string,
     password: string,
@@ -20,6 +22,7 @@ export const AuthContext = React.createContext<contextProps | null>(null);
 
 export const AuthProvider: React.FunctionComponent = ({children}) => {
   const [user, setUser] = React.useState<any>(null);
+  const [state, setState] = React.useState<boolean>(false);
   const login = async (
     email: string,
     password: string,
@@ -42,6 +45,8 @@ export const AuthProvider: React.FunctionComponent = ({children}) => {
     <AuthContext.Provider
       value={{
         user,
+        state,
+        setState,
         setUser,
         login,
         logOut,

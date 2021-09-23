@@ -14,10 +14,16 @@ import {ProfileScreenProps} from '../../navigation/tab/types';
 import {customColor} from '../../theme';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {AuthContext} from '../../contexts/auth';
+import {ToggleState} from '../../utilities';
+import Loader from '../../components/general/Loader';
+import {useIsFocused} from '@react-navigation/core';
 
 const {width, height} = Dimensions.get('window');
 function ProfileScreen({navigation, route}: ProfileScreenProps) {
   const Auth = React.useContext(AuthContext);
+  const [initializing, setInitializing] = React.useState<boolean>(false);
+  const isFocused = useIsFocused();
+  if (initializing) return <Loader />;
   return (
     <Container>
       <FocusedStatusBar
@@ -49,7 +55,7 @@ function ProfileScreen({navigation, route}: ProfileScreenProps) {
                 </Center>
               </Box>
               <Text fontSize="xl" bold color="white" mt={2}>
-                Chandan Bauri
+                {Auth?.user.displayName ?? 'User name'}
               </Text>
             </Center>
           </Box>
@@ -67,26 +73,52 @@ function ProfileScreen({navigation, route}: ProfileScreenProps) {
               Name
             </Text>
             <Text color={customColor.gray} ml={2} my={3}>
-              Chandan Bauri
+              {Auth?.user.displayName ?? 'User name'}
             </Text>
             <Text fontWeight="700" fontSize="2xl" color={customColor.brown}>
               Email
             </Text>
             <Text color={customColor.gray} ml={2} my={3}>
-              email@example.com
+              {Auth?.user.email ?? 'Email'}
             </Text>
             <Text fontWeight="700" fontSize="2xl" color={customColor.brown}>
               Phone
             </Text>
             <Text color={customColor.gray} ml={2} my={3}>
-              +91 9876543210
+              {Auth?.user.phoneNumber ?? 'Phone Number'}
             </Text>
-            <Button
-              onPress={() => {
-                Auth?.logOut();
-              }}>
-              <Text>Log out</Text>
-            </Button>
+            <Box>
+              <Button
+                mt={10}
+                bgColor={`${customColor.brown}90`}
+                onPress={async () => {
+                  try {
+                    if (isFocused) {
+                      setInitializing(true);
+                      let res = await ToggleState();
+                      if (res && res.data) {
+                        let {state} = JSON.parse(res.data);
+                        console.log('CURRENT USER STATE', state);
+                        if (Auth && Auth.setState)
+                          Auth.setState(state ?? false);
+                      }
+                      setInitializing(false);
+                    }
+                  } catch (error) {
+                    setInitializing(false);
+                    throw error;
+                  }
+                }}>
+                <Text>{!Auth?.state ? 'Go Online' : 'Go Offline'}</Text>
+              </Button>
+              <Button
+                mt={5}
+                onPress={() => {
+                  Auth?.logOut();
+                }}>
+                <Text color={customColor.white}>Log out</Text>
+              </Button>
+            </Box>
           </Box>
         </Column>
       </Box>

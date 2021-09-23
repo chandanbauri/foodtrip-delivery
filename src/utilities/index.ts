@@ -9,3 +9,4 @@ export let addFCMtoke = functions().httpsCallable('addFCMtoke');
 export let fetchRequests = functions().httpsCallable('fetchRequests');
 export const getFCMToken = async () => await messaging().getToken();
 export let onPickUp = functions().httpsCallable('onPickUp');
+export let ToggleState = functions().httpsCallable('ToggleState')

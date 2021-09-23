@@ -10,6 +10,7 @@ import auth from '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import {customColor} from '../../theme';
 import DeliveredOrder from '../../components/cards/delivered';
+import Loader from '../../components/general/Loader';
 const {height, width} = Dimensions.get('window');
 const CompletedOrders = ({navigation, route}: HomeScreenProps) => {
   const [initializing, setInitializing] = React.useState<boolean>(true);
@@ -110,17 +111,7 @@ const CompletedOrders = ({navigation, route}: HomeScreenProps) => {
     }
     return;
   }, [IsFocused]);
-  if (initializing)
-    return (
-      <Box alignItems="center" justifyContent="center" flex={1}>
-        <FocusedStatusBar
-          backgroundColor="transparent"
-          barStyle="dark-content"
-          translucent={true}
-        />
-        <ActivityIndicator color={customColor.brown} size={50} />
-      </Box>
-    );
+  if (initializing) return <Loader />;
   return (
     <Box width={width}>
       <FocusedStatusBar

@@ -1,26 +1,37 @@
-import {Box, Button, Center, FlatList, Text} from 'native-base';
+import {Box, Button, Center, FlatList, Spinner, Text} from 'native-base';
 import * as React from 'react';
 import {ActivityIndicator, Dimensions, RefreshControl} from 'react-native';
-import AcceptOrderCard from '../../components/cards/acceptedOrder';
+
+import OrderCard from '../../components/cards/Order';
 import FocusedStatusBar from '../../components/general/statusBar';
 import {HomeScreenProps} from '../../navigation/tab/types';
+import {customColor} from '../../theme';
+import {
+  addFCMtoke,
+  fetchRequests,
+  getFCMToken,
+  test,
+  ToggleState,
+} from '../../utilities';
 import {useIsFocused} from '@react-navigation/native';
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
-import {customColor} from '../../theme';
+import {requestNotificationPermission} from '../../utilities/permissions/permissions';
 import Loader from '../../components/general/Loader';
 import {AuthContext} from '../../contexts/auth';
-import {ToggleState} from '../../utilities';
+
 const {height, width} = Dimensions.get('window');
-const OrderScreen = ({navigation, route}: HomeScreenProps) => {
+const HomeScreen = ({navigation, route}: HomeScreenProps) => {
   const [initializing, setInitializing] = React.useState<boolean>(true);
-  const [list, setList] = React.useState<Array<any>>([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [list, setList] = React.useState<Array<any>>([]);
   const startInitializing = () => setInitializing(true);
-  const stopInitializing = () => setInitializing(false);
-  let IsFocused = useIsFocused();
+  const stopInitializing = () => {
+    setInitializing(false);
+  };
   const Auth = React.useContext(AuthContext);
+  const IsFocused = useIsFocused();
   const getOrders = async () => {
     setInitializing(true);
     // setList([]);
@@ -30,32 +41,36 @@ const OrderScreen = ({navigation, route}: HomeScreenProps) => {
         .firestore()
         .collection('deliveryPartners')
         .doc(auth().currentUser?.uid)
-        .collection('ongoing')
+        .collection('requests')
         .get();
-      if (res.size >= 1) {
-        res.forEach(async item => {
-          let data = item.data();
-          let blob = await firebase
-            .app('SECONDARY_APP')
-            .firestore()
-            .collection('orders')
-            .doc(data.orderId)
-            .get();
-          let index = list.findIndex(item => item.docId == blob.id);
-          if (index == -1)
-            setList(prev => {
-              return [
-                ...prev,
-                {...blob.data(), docId: blob.id, reqId: item.id},
-              ];
-            });
-        });
+      if (res && res.size >= 1) {
+        Promise.all(
+          res.docs.map(async (item: any) => {
+            let data = item.data();
+            let blob = await firebase
+              .app('SECONDARY_APP')
+              .firestore()
+              .collection('orders')
+              .doc(data.orderId)
+              .get();
+            let index = list.findIndex(item => item.docId == blob.id);
+            if (index == -1)
+              setList(prev => {
+                return [
+                  ...prev,
+                  {...blob.data(), docId: blob.id, reqId: item.id},
+                ];
+              });
+          }),
+        );
       }
-      setInitializing(false);
+      stopInitializing();
     } catch (error) {
+      stopInitializing();
       throw error;
     }
   };
+
   const onRefresh = React.useCallback(async () => {
     setInitializing(true);
     setList([]);
@@ -65,7 +80,7 @@ const OrderScreen = ({navigation, route}: HomeScreenProps) => {
         .firestore()
         .collection('deliveryPartners')
         .doc(auth().currentUser?.uid)
-        .collection('ongoing')
+        .collection('requests')
         .get();
       if (res.size >= 1) {
         res.forEach(async item => {
@@ -77,6 +92,7 @@ const OrderScreen = ({navigation, route}: HomeScreenProps) => {
             .doc(data.orderId)
             .get();
           let index = list.findIndex(item => item.docId == blob.id);
+          // console.log(index);
           if (index == -1)
             setList(prev => {
               return [
@@ -91,6 +107,19 @@ const OrderScreen = ({navigation, route}: HomeScreenProps) => {
       throw error;
     }
   }, [refreshing]);
+  const saveFCMToken = async () => {
+    if (IsFocused) {
+      try {
+        let token = await getFCMToken();
+        // console.log('FCM token:', token);
+        await addFCMtoke({FCM: token});
+      } catch (error) {
+        throw error;
+      }
+    }
+
+    return;
+  };
   React.useEffect(() => {
     if (IsFocused) {
       getOrders().catch(error => {
@@ -99,6 +128,19 @@ const OrderScreen = ({navigation, route}: HomeScreenProps) => {
     }
     return;
   }, [IsFocused]);
+
+  React.useEffect(() => {
+    saveFCMToken().catch(error => {
+      throw error;
+    });
+    return;
+  }, []);
+
+  React.useEffect(() => {
+    requestNotificationPermission().catch(error => {
+      throw error;
+    });
+  }, []);
   if (initializing) return <Loader />;
   if (Auth && Auth.state)
     return (
@@ -109,28 +151,25 @@ const OrderScreen = ({navigation, route}: HomeScreenProps) => {
           translucent={true}
         />
         {/* <Container w={width} h={height * 0.1}>
-          <Flex w={width} justifyContent="center" alignItems="center">
-            <Text bold fontSize="2xl" color={customColor.brown}>
-              Orders
-            </Text>
-          </Flex>
-        </Container> */}
+        <Flex w={width} justifyContent="center" alignItems="center">
+          <Text bold fontSize="2xl" color={customColor.brown}>
+            Orders
+          </Text>
+        </Flex>
+      </Container> */}
         <FlatList
           data={list}
           keyExtractor={(item, index) => `${index}`}
           renderItem={({item}) => (
-            <AcceptOrderCard
-              order={item}
+            <OrderCard
+              {...item}
               onAction={startInitializing}
               onActionComplete={stopInitializing}
-              refresh={onRefresh}
             />
           )}
           ListEmptyComponent={
             <Box mt={30} alignItems="center" justifyContent="center">
-              <Text color={customColor.brown}>
-                No on going orders available
-              </Text>
+              <Text color={customColor.brown}>No pending orders available</Text>
             </Box>
           }
           refreshControl={
@@ -176,4 +215,4 @@ const OrderScreen = ({navigation, route}: HomeScreenProps) => {
     );
 };
 
-export default OrderScreen;
+export default HomeScreen;

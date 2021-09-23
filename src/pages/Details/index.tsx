@@ -37,13 +37,26 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
     (item, index: number) => `item-${index}`,
   );
   const FoodItem = (props: any) => (
-    <Box my={1} px={2} py={2}>
-      <Text fontSize="xl" fontWeight="700" color={customColor.brown}>
-        {props.name}
-      </Text>
-      <Text fontSize="xs" color={customColor.gray}>
-        {props.desc}
-      </Text>
+    <Box
+      my={1}
+      px={2}
+      py={2}
+      flexDirection="row"
+      alignItems="center"
+      justifyContent="space-between">
+      <Box>
+        <Text fontSize="xl" fontWeight="700" color={customColor.brown}>
+          {`${props.name} (${props.count})`}
+        </Text>
+        <Text fontSize="xs" color={customColor.gray}>
+          {props.desc}
+        </Text>
+      </Box>
+      <Box>
+        <Text fontSize="xl" fontWeight="700" color={customColor.brown}>
+          {props.cost}
+        </Text>
+      </Box>
     </Box>
   );
   const ListHeader = () => (
@@ -72,6 +85,13 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
           <Box>
             <Text fontSize="2xl" fontWeight="700" color={customColor.brown}>
               {`${order.userDetails.name}`}
+            </Text>
+            <Text
+              fontSize="sm"
+              fontWeight="700"
+              mt={2}
+              color={customColor.brown}>
+              {`${order.userDetails.phone}`}
             </Text>
             <Text fontSize="xs" mt={2} color={customColor.gray}>
               {`${order.userDetails.deliveryAddress}`}

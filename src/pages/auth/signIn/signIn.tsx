@@ -75,7 +75,7 @@ function SignInScreen({navigation, route}: SiginScreenProps) {
               <Image
                 size="lg"
                 resizeMode="cover"
-                source={require('../../../assets/general/logo.png')}
+                source={require('../../../assets/icon/logo.jpeg')}
                 alt="Food adda logo"
               />
             </AspectRatio>

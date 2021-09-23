@@ -10,7 +10,7 @@ import {acceptOrder, rejectOrder} from '../../../utilities';
 import firebase from '@react-native-firebase/app';
 
 const OrderCard: React.FunctionComponent<any> = (props: any) => {
-  const {data, onChange} = props;
+  const {onChange, onAcction, onActionComplete, ...data} = props;
   const Auth = React.useContext(AuthContext);
   const navigation = useNavigation<CombinedNavigationProp>();
   return (
@@ -33,7 +33,24 @@ const OrderCard: React.FunctionComponent<any> = (props: any) => {
         <Box w="100%" mt={4}>
           <Row justifyContent="space-around" alignItems="center">
             <Button
-              px={10}
+              px={5}
+              py={3}
+              bg={customColor.brown}
+              shadow={2}
+              onPress={() => {
+                navigation.navigate('home', {
+                  screen: 'Details',
+                  params: {
+                    order: data,
+                  },
+                });
+              }}>
+              <Text fontSize="xs" color="white">
+                View Details
+              </Text>
+            </Button>
+            <Button
+              px={5}
               py={3}
               bg="green.400"
               onPress={async () => {
@@ -91,12 +108,12 @@ const OrderCard: React.FunctionComponent<any> = (props: any) => {
                   throw error;
                 }
               }}>
-              <Text fontSize="md" color="white">
+              <Text fontSize="xs" color="white">
                 Accept
               </Text>
             </Button>
             <Button
-              px={10}
+              px={5}
               py={3}
               bg="red.500"
               onPress={async () => {
@@ -117,7 +134,7 @@ const OrderCard: React.FunctionComponent<any> = (props: any) => {
                   throw error;
                 }
               }}>
-              <Text fontSize="md" color="white">
+              <Text fontSize="xs" color="white">
                 Reject
               </Text>
             </Button>
