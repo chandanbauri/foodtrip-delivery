@@ -43,15 +43,28 @@ function CustomInputField(props: TextInputProps) {
 
 function SignInScreen({navigation, route}: SiginScreenProps) {
   const Auth = React.useContext(AuthContext);
-  const [fields, setFields] = React.useState<fieldTypes | null>(null);
+  const [fields, setFields] = React.useState<fieldTypes>({
+    email: '',
+    password: '',
+  });
   const [isPopOverOpen, setPopOverOpen] = React.useState<boolean>(false);
+  const ErrorMsg = React.useRef<string>('');
   const handleTextInput = (fieldName: string, text: string) =>
     setFields((prev: any) => ({...prev, [fieldName]: text}));
-  const onSubmit = () => {
-    if (fields)
-      Auth?.login(fields?.email, fields?.password, (error: any) => {
+  const onSubmit = async () => {
+    try {
+      if (fields.email !== '' && fields.password !== '')
+        Auth?.login(fields?.email, fields?.password, (error: any) => {
+          ErrorMsg.current = 'The user may have been deleted';
+          setPopOverOpen(true);
+        });
+      else {
+        ErrorMsg.current = 'Please Provide a valid email and password';
         setPopOverOpen(true);
-      });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -149,7 +162,7 @@ function SignInScreen({navigation, route}: SiginScreenProps) {
                     Error
                   </Text>
                 </Popover.Header>
-                <Popover.Body>The user may have been deleted</Popover.Body>
+                <Popover.Body>{ErrorMsg.current}</Popover.Body>
               </Popover.Content>
             </Popover>
           </Flex>
