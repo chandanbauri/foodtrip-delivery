@@ -15,13 +15,14 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Dimensions, Linking, Pressable} from 'react-native';
 import FocusedStatusBar from '../../components/general/statusBar';
+import moment from 'moment';
 
 const {width} = Dimensions.get('window');
 
 export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
   const info = React.useRef<any>();
   let {order} = route.params;
-  // console.log(order);
+  // console.log(order.createdAt);
   React.useLayoutEffect(() => {
     navigation?.setOptions({
       headerLeft: () => (
@@ -106,6 +107,13 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
             </Text>
             <Text fontSize="xs" mt={2} color={customColor.gray}>
               {`${order.userDetails.deliveryAddress}`}
+            </Text>
+            <Text fontSize="xs" mt={2} color={customColor.gray}>
+              {`${
+                order.placedAt
+                  ? moment(order.placedAt).format('DD/MM/YYYY HH:mm')
+                  : ''
+              }`}
             </Text>
           </Box>
           <Pressable style={{padding: 5}} onPress={() => makeCall()}>

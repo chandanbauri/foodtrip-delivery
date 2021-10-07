@@ -29,24 +29,28 @@ const RejectedOrders = ({navigation, route}: HomeScreenProps) => {
         .collection('rejected')
         .get();
       if (res.size >= 1) {
-        Promise.all(
-          res.docs.map(async item => {
-            let data = item.data();
-            let blob = await firebase
-              .app('SECONDARY_APP')
-              .firestore()
-              .collection('orders')
-              .doc(data.orderId)
-              .get();
-            let index = list.findIndex(item => item.docId == blob.id);
-            if (index == -1)
-              setList(prev => {
-                return [
-                  ...prev,
-                  {...blob.data(), docId: blob.id, reqId: item.id},
-                ];
-              });
-          }),
+        await Promise.all(
+          res.docs
+            .sort(function (a, b) {
+              return b.data().placedAt - a.data().placedAt;
+            })
+            .map(async item => {
+              let data = item.data();
+              let blob = await firebase
+                .app('SECONDARY_APP')
+                .firestore()
+                .collection('orders')
+                .doc(data.orderId)
+                .get();
+              let index = list.findIndex(item => item.docId == blob.id);
+              if (index == -1)
+                setList(prev => {
+                  return [
+                    ...prev,
+                    {...blob.data(), docId: blob.id, reqId: item.id},
+                  ];
+                });
+            }),
         );
       }
       setInitializing(false);
@@ -66,24 +70,30 @@ const RejectedOrders = ({navigation, route}: HomeScreenProps) => {
         .collection('rejected')
         .get();
       if (res.size >= 1) {
-        res.forEach(async item => {
-          let data = item.data();
-          let blob = await firebase
-            .app('SECONDARY_APP')
-            .firestore()
-            .collection('orders')
-            .doc(data.orderId)
-            .get();
-          let index = list.findIndex(item => item.docId == blob.id);
-          // console.log(index);
-          if (index == -1)
-            setList(prev => {
-              return [
-                ...prev,
-                {...blob.data(), docId: blob.id, reqId: item.id},
-              ];
-            });
-        });
+        await Promise.all(
+          res.docs
+            .sort(function (a, b) {
+              return b.data().placedAt - a.data().placedAt;
+            })
+            .map(async item => {
+              let data = item.data();
+              let blob = await firebase
+                .app('SECONDARY_APP')
+                .firestore()
+                .collection('orders')
+                .doc(data.orderId)
+                .get();
+              let index = list.findIndex(item => item.docId == blob.id);
+              // console.log(index);
+              if (index == -1)
+                setList(prev => {
+                  return [
+                    ...prev,
+                    {...blob.data(), docId: blob.id, reqId: item.id},
+                  ];
+                });
+            }),
+        );
       }
       setInitializing(false);
     } catch (error) {
