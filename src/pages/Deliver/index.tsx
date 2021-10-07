@@ -20,7 +20,7 @@ function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
         <Pressable
           style={{paddingLeft: 10}}
           onPress={() => {
-            navigation.goBack();
+            navigation.navigate('active');
           }}>
           <Feather name="chevron-left" size={24} color={customColor.brown} />
         </Pressable>
@@ -95,7 +95,7 @@ function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
                       {
                         text: 'SURE !',
                         onPress: () => {
-                          navigation.goBack();
+                          navigation.navigate('active');
                         },
                       },
                     ],
@@ -129,7 +129,7 @@ function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
           bg={customColor.brown}
           shadow={2}
           onPress={() => {
-            navigation?.goBack();
+            navigation.navigate('active');
           }}>
           <Text fontSize="xs" color="white">
             go back

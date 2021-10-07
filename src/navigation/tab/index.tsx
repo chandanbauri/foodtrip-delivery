@@ -9,6 +9,7 @@ import ProfileScreen from '../../pages/profile';
 import NotificationScreen from '../../pages/notification';
 import OrderNavigator from '../Order';
 import HelperStackNavigator from '../helper';
+import {Text} from 'native-base';
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>();
 
@@ -35,6 +36,30 @@ function TabNavigator() {
             case 'notification':
               iconName = focused ? 'mail-open' : 'mail-open-outline';
               return <Ionicons name={iconName} size={size} color={color} />;
+          }
+        },
+        tabBarLabel: ({focused, color}) => {
+          let label;
+          switch (route.name) {
+            case 'home':
+              return (
+                <Text fontSize="xxs" color={color}>
+                  Home
+                </Text>
+              );
+
+            case 'profile':
+              return (
+                <Text fontSize="xxs" color={color}>
+                  Profile
+                </Text>
+              );
+            case 'notification':
+              return (
+                <Text fontSize="xxs" color={color}>
+                  Notification
+                </Text>
+              );
           }
         },
       })}>

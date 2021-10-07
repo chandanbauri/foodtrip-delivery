@@ -9,6 +9,8 @@ import {AuthContext} from '../../contexts/auth';
 import auth from '@react-native-firebase/auth';
 import firebase from '@react-native-firebase/app';
 import messaging from '@react-native-firebase/messaging';
+import {useNavigation} from '@react-navigation/core';
+import {CombinedNavigationProp} from '..';
 
 const RootStack = createStackNavigator<rootStackParamList>();
 const credentials = {
@@ -95,14 +97,13 @@ const RootStackNavigator = () => {
         screenOptions={{
           headerLeft: () => null,
         }}>
-        {!Auth?.user && (
+        {Auth && !Auth.user ? (
           <RootStack.Screen
             name="signin"
             component={SignInScreen}
             options={{headerShown: false}}
           />
-        )}
-        {Auth?.user && (
+        ) : (
           <RootStack.Screen
             name="TabNav"
             component={TabNavigator}

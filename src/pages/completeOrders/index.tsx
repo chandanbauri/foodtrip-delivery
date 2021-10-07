@@ -21,7 +21,7 @@ const CompletedOrders = ({navigation, route}: HomeScreenProps) => {
   let IsFocused = useIsFocused();
   const getOrders = async () => {
     setInitializing(true);
-    setList([]);
+    // setList([]);
     try {
       let res = await firebase
         .app('SECONDARY_APP')
@@ -31,30 +31,32 @@ const CompletedOrders = ({navigation, route}: HomeScreenProps) => {
         .collection('completed')
         .get();
       if (res.size >= 1) {
-        res.forEach(async item => {
-          let data = item.data();
-          //   let blob = await firebase
-          //     .app('SECONDARY_APP')
-          //     .firestore()
-          //     .collection('orders')
-          //     .doc(data.orderId)
-          //     .get();
+        Promise.all(
+          res.docs.map(async item => {
+            let data = item.data();
+            //   let blob = await firebase
+            //     .app('SECONDARY_APP')
+            //     .firestore()
+            //     .collection('orders')
+            //     .doc(data.orderId)
+            //     .get();
 
-          //   let index = list.findIndex(item => item.docId == blob.id);
-          //   console.log(blob.data());
-          //   if (index == -1)
-          //     setList(prev => {
-          //       return [
-          //         ...prev,
-          //         {...blob.data(), docId: blob.id, reqId: item.id},
-          //       ];
-          //     });
-          let index = list.findIndex(value => value.id == item.id);
-          if (index == -1)
-            setList(prev => {
-              return [...prev, {...data, id: item.id}];
-            });
-        });
+            //   let index = list.findIndex(item => item.docId == blob.id);
+            //   console.log(blob.data());
+            //   if (index == -1)
+            //     setList(prev => {
+            //       return [
+            //         ...prev,
+            //         {...blob.data(), docId: blob.id, reqId: item.id},
+            //       ];
+            //     });
+            let index = list.findIndex(value => value.id == item.id);
+            if (index == -1)
+              setList(prev => {
+                return [...prev, {...data, id: item.id}];
+              });
+          }),
+        );
       }
       setInitializing(false);
     } catch (error) {
@@ -73,30 +75,32 @@ const CompletedOrders = ({navigation, route}: HomeScreenProps) => {
         .collection('completed')
         .get();
       if (res.size >= 1) {
-        res.forEach(async item => {
-          let data = item.data();
-          //   let blob = await firebase
-          //     .app('SECONDARY_APP')
-          //     .firestore()
-          //     .collection('orders')
-          //     .doc(data.orderId)
-          //     .get();
+        Promise.all(
+          res.docs.map(async item => {
+            let data = item.data();
+            //   let blob = await firebase
+            //     .app('SECONDARY_APP')
+            //     .firestore()
+            //     .collection('orders')
+            //     .doc(data.orderId)
+            //     .get();
 
-          //   let index = list.findIndex(item => item.docId == blob.id);
-          //   console.log(blob.data());
-          //   if (index == -1)
-          //     setList(prev => {
-          //       return [
-          //         ...prev,
-          //         {...blob.data(), docId: blob.id, reqId: item.id},
-          //       ];
-          //     });
-          let index = list.findIndex(value => value.id == item.id);
-          if (index == -1)
-            setList(prev => {
-              return [...prev, {...data, id: item.id}];
-            });
-        });
+            //   let index = list.findIndex(item => item.docId == blob.id);
+            //   console.log(blob.data());
+            //   if (index == -1)
+            //     setList(prev => {
+            //       return [
+            //         ...prev,
+            //         {...blob.data(), docId: blob.id, reqId: item.id},
+            //       ];
+            //     });
+            let index = list.findIndex(value => value.id == item.id);
+            if (index == -1)
+              setList(prev => {
+                return [...prev, {...data, id: item.id}];
+              });
+          }),
+        );
       }
       setInitializing(false);
     } catch (error) {

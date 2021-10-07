@@ -92,45 +92,39 @@ function NotificationScreen() {
     );
   return (
     <>
+      <SafeAreaView />
       <FocusedStatusBar
-        backgroundColor="transparent"
+        backgroundColor={customColor.white}
         barStyle="dark-content"
         translucent={true}
       />
-      <Box bg="white" flex={1}>
-        <SafeAreaView />
-
-        {/* <Box mt={height * 0.1} width={width} mb={5}> */}
-        <FlatList
-          ListHeaderComponent={
-            <Box
-              width={width}
-              pl={5}
-              pt={5}
-              height={height * 0.15}
-              justifyContent="center"
-              bgColor="white">
-              <Text fontSize="3xl" color="gray.800">
-                Notifications
-              </Text>
-            </Box>
-          }
-          data={list}
-          keyExtractor={(item, index) => `${index}`}
-          renderItem={({item}) => <NotificationCard {...item} />}
-          stickyHeaderIndices={[0]}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={
-            <Box mt={30} alignItems="center" justifyContent="center">
-              <Text color={customColor.brown}>
-                No requests available for now
-              </Text>
-            </Box>
-          }
-        />
-        {/* </Box> */}
-      </Box>
+      <FlatList
+        style={{backgroundColor: customColor.white}}
+        ListHeaderComponent={
+          <Box
+            width={width}
+            px={5}
+            py={3}
+            justifyContent="center"
+            bgColor="white">
+            <Text fontSize="3xl" color="gray.800">
+              Notifications
+            </Text>
+          </Box>
+        }
+        data={list}
+        keyExtractor={(item, index) => `${index}`}
+        renderItem={({item}) => <NotificationCard {...item} />}
+        stickyHeaderIndices={[0]}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <Box mt={10} px={5} justifyContent="center">
+            <Text color={customColor.brown}>No requests available for now</Text>
+          </Box>
+        }
+      />
+      {/* </Box> */}
     </>
   );
 }

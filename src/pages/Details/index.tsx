@@ -12,8 +12,11 @@ import {DetailsScreenProps} from '../../navigation/helper';
 import {customColor} from '../../theme';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import {Pressable} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Dimensions, Linking, Pressable} from 'react-native';
 import FocusedStatusBar from '../../components/general/statusBar';
+
+const {width} = Dimensions.get('window');
 
 export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
   const info = React.useRef<any>();
@@ -32,20 +35,28 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
       ),
     });
   });
-
-  let data = Array.apply(null, Array<string>(5)).map(
-    (item, index: number) => `item-${index}`,
-  );
+  const getItemCosting = (list: Array<any>) => {
+    let total: number = 0;
+    list.map(item => {
+      total = total + parseInt(item.cost);
+    });
+    return total.toFixed(2);
+  };
+  const makeCall = () => {
+    Linking.openURL(`tel:${order.userDetails.phone}`);
+  };
+  // let data = Array.apply(null, Array<string>(5)).map(
+  //   (item, index: number) => `item-${index}`,
+  // );
   const FoodItem = (props: any) => (
     <Box
       my={1}
-      px={2}
       py={2}
       flexDirection="row"
       alignItems="center"
       justifyContent="space-between">
-      <Box>
-        <Text fontSize="xl" fontWeight="700" color={customColor.brown}>
+      <Box maxWidth={width * 0.5}>
+        <Text fontSize="sm" fontWeight="700" color={customColor.brown}>
           {`${props.name} (${props.count})`}
         </Text>
         <Text fontSize="xs" color={customColor.gray}>
@@ -53,8 +64,8 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
         </Text>
       </Box>
       <Box>
-        <Text fontSize="xl" fontWeight="700" color={customColor.brown}>
-          {props.cost}
+        <Text fontWeight="700" color={customColor.brown}>
+          {parseFloat(props.cost).toFixed(2)}
         </Text>
       </Box>
     </Box>
@@ -64,7 +75,7 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
       <Box paddingY={5} w="100%">
         <Row w="100%" justifyContent="space-between" alignItems="center">
           <Box>
-            <Text fontSize="2xl" fontWeight="700" color={customColor.brown}>
+            <Text fontSize="lg" fontWeight="700" color={customColor.brown}>
               {`${order.restaurantDetails.name}`}
             </Text>
             <Text fontSize="xs" mt={2} color={customColor.gray}>
@@ -80,10 +91,10 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
           </Pressable>
         </Row>
       </Box>
-      <Box paddingY={5} w="100%">
+      <Box paddingY={5} w="100%" maxWidth={width}>
         <Row w="100%" justifyContent="space-between" alignItems="center">
           <Box>
-            <Text fontSize="2xl" fontWeight="700" color={customColor.brown}>
+            <Text fontSize="lg" fontWeight="700" color={customColor.brown}>
               {`${order.userDetails.name}`}
             </Text>
             <Text
@@ -97,17 +108,13 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
               {`${order.userDetails.deliveryAddress}`}
             </Text>
           </Box>
-          <Pressable>
-            <Fontisto
-              name="map-marker-alt"
-              size={24}
-              color={customColor.brown}
-            />
+          <Pressable style={{padding: 5}} onPress={() => makeCall()}>
+            <Ionicons name="call" size={24} color={customColor.brown} />
           </Pressable>
         </Row>
       </Box>
       <Box>
-        <Text fontWeight="700" fontSize="2xl" color={customColor.brown} mb={2}>
+        <Text fontWeight="700" fontSize="xl" color={customColor.brown} mb={2}>
           Order Details
         </Text>
       </Box>
@@ -121,7 +128,23 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
           Item Total
         </Text>
         <Text color={customColor.brown} fontWeight="700">
-          {`${order.amount}`}
+          {`${getItemCosting(order.items)}`}
+        </Text>
+      </Row>
+      <Row justifyContent="space-between">
+        <Text color={customColor.brown} fontWeight="700">
+          GST
+        </Text>
+        <Text color={customColor.brown} fontWeight="700">
+          {`${parseFloat(order.gst).toFixed(2)}`}
+        </Text>
+      </Row>
+      <Row justifyContent="space-between">
+        <Text color={customColor.brown} fontWeight="700">
+          Delivery Charge
+        </Text>
+        <Text color={customColor.brown} fontWeight="700">
+          {`${parseFloat(order.deliveryCharge).toFixed(2)}`}
         </Text>
       </Row>
       <Row justifyContent="space-between" mb={2}>
@@ -145,9 +168,9 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
         <Text color={customColor.brown} fontWeight="700" fontSize="xl" mb={1}>
           ORDER ID
         </Text>
-        <Text
-          color={customColor.gray}
-          textTransform="uppercase">{`#${order.docId}`}</Text>
+        <Text color={customColor.gray} textTransform="uppercase">{`#${
+          order.docId ?? order.id
+        }`}</Text>
         <Text
           color={customColor.brown}
           fontWeight="700"
