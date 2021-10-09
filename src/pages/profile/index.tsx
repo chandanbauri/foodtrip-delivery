@@ -8,7 +8,7 @@ import {
   Text,
 } from 'native-base';
 import * as React from 'react';
-import {Dimensions} from 'react-native';
+import {Alert, Dimensions} from 'react-native';
 import FocusedStatusBar from '../../components/general/statusBar';
 import {ProfileScreenProps} from '../../navigation/tab/types';
 import {customColor} from '../../theme';
@@ -119,23 +119,35 @@ function ProfileScreen({navigation, route}: ProfileScreenProps) {
                 <Button
                   mt={5}
                   onPress={async () => {
-                    try {
-                      if (isFocused) {
-                        setInitializing(true);
-                        let res = await ToggleState();
-                        if (res && res.data) {
-                          let {state} = JSON.parse(res.data);
-                          // console.log('CURRENT USER STATE', state);
-                          if (Auth && Auth.setState)
-                            Auth.setState(state ?? false);
-                          Auth?.logOut();
-                        }
-                        setInitializing(false);
-                      }
-                    } catch (error) {
-                      setInitializing(false);
-                      throw error;
-                    }
+                    Alert.alert('Are you sure ?', 'You want to log out', [
+                      {
+                        text: 'Cancel',
+                        onPress: () => {},
+                      },
+                      {
+                        text: 'Sure',
+                        onPress: async () => {
+                          try {
+                            if (isFocused) {
+                              setInitializing(true);
+                              let res = await ToggleState();
+                              if (res && res.data) {
+                                let {state} = JSON.parse(res.data);
+                                // console.log('CURRENT USER STATE', state);
+                                if (Auth && Auth.setState)
+                                  Auth.setState(state ?? false);
+                                Auth?.logOut();
+                              }
+                              setInitializing(false);
+                            }
+                          } catch (error) {
+                            setInitializing(false);
+                            throw error;
+                          }
+                        },
+                      },
+                    ]);
+
                     // navigation.navigate('active');
                   }}>
                   <Text color={customColor.white}>Log out</Text>
