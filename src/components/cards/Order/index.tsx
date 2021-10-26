@@ -7,7 +7,6 @@ import {AuthContext} from '../../../contexts/auth';
 import {CombinedNavigationProp} from '../../../navigation';
 import {customColor} from '../../../theme';
 import {acceptOrder, rejectOrder} from '../../../utilities';
-import firebase from '@react-native-firebase/app';
 
 const OrderCard: React.FunctionComponent<any> = (props: any) => {
   const {onChange, onAcction, onActionComplete, ...data} = props;

@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Divider,
-  FlatList,
-  Row,
-  Text,
-  ScrollView,
-} from 'native-base';
+import {Box, Divider, FlatList, Row, Text} from 'native-base';
 import * as React from 'react';
 import {DetailsScreenProps} from '../../navigation/helper';
 import {customColor} from '../../theme';
@@ -20,7 +12,6 @@ import moment from 'moment';
 const {width} = Dimensions.get('window');
 
 export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
-  const info = React.useRef<any>();
   let {order} = route.params;
   // console.log(order.createdAt);
   React.useLayoutEffect(() => {
@@ -46,9 +37,6 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
   const makeCall = () => {
     Linking.openURL(`tel:${order.userDetails.phone}`);
   };
-  // let data = Array.apply(null, Array<string>(5)).map(
-  //   (item, index: number) => `item-${index}`,
-  // );
   const FoodItem = (props: any) => (
     <Box
       my={1}

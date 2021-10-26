@@ -1,6 +1,6 @@
 import {Box, Button, Center, FlatList, Text} from 'native-base';
 import * as React from 'react';
-import {ActivityIndicator, Dimensions, RefreshControl} from 'react-native';
+import {Dimensions, RefreshControl} from 'react-native';
 import AcceptOrderCard from '../../components/cards/acceptedOrder';
 import FocusedStatusBar from '../../components/general/statusBar';
 import {HomeScreenProps} from '../../navigation/tab/types';
@@ -12,7 +12,7 @@ import {customColor} from '../../theme';
 import Loader from '../../components/general/Loader';
 import {AuthContext} from '../../contexts/auth';
 import {ToggleState} from '../../utilities';
-const {height, width} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 const OrderScreen = ({navigation, route}: HomeScreenProps) => {
   const [initializing, setInitializing] = React.useState<boolean>(true);
   const [list, setList] = React.useState<Array<any>>([]);

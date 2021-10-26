@@ -5,15 +5,13 @@ import {customColor} from '../../theme';
 import Feather from 'react-native-vector-icons/Feather';
 import FocusedStatusBar from '../../components/general/statusBar';
 import {onDeliveryComplete} from '../../utilities';
-import {ActivityIndicator, Alert} from 'react-native';
+import {Alert} from 'react-native';
 import Loader from '../../components/general/Loader';
 
 function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
   const {order} = route.params;
   const [paymentRecived, serPaymentRecieved] = React.useState<boolean>(false);
-  // console.log(order);
   const [initializing, setInitializing] = React.useState<boolean>(false);
-  let date = new Date();
   React.useLayoutEffect(() => {
     navigation?.setOptions({
       headerLeft: () => (
@@ -41,12 +39,6 @@ function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
         </Text>
         <Text color={customColor.gray}>{`#${order.docId}`}</Text>
       </Box>
-      {/* <Box mt={3}>
-        <Text fontWeight="700" fontSize="2xl" color={customColor.brown}>
-          Date
-        </Text>
-        <Text color={customColor.gray}>{`he`}</Text>
-      </Box> */}
       <Box mt={3}>
         <Text fontWeight="700" fontSize="2xl" color={customColor.brown}>
           Delivered To

@@ -1,19 +1,12 @@
 import {Box, Button, Center, FlatList, Spinner, Text} from 'native-base';
 import * as React from 'react';
-import {ActivityIndicator, Dimensions, RefreshControl} from 'react-native';
+import {Dimensions, RefreshControl} from 'react-native';
 
 import OrderCard from '../../components/cards/Order';
 import FocusedStatusBar from '../../components/general/statusBar';
 import {HomeScreenProps} from '../../navigation/tab/types';
 import {customColor} from '../../theme';
-import {
-  addFCMtoke,
-  fetchRequests,
-  getFCMToken,
-  getState,
-  test,
-  ToggleState,
-} from '../../utilities';
+import {addFCMtoke, getFCMToken, getState, ToggleState} from '../../utilities';
 import {useIsFocused} from '@react-navigation/native';
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';

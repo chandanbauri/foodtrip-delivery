@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {Box, Center, Row, Text} from 'native-base';
 import * as React from 'react';
-import {Dimensions, Pressable} from 'react-native';
+import {Pressable} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {CombinedNavigationProp} from '../../../navigation';
 

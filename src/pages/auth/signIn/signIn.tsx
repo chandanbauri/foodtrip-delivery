@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-  Box,
   Center,
   Container,
   Flex,
@@ -10,7 +9,6 @@ import {
   Button,
   AspectRatio,
   Image,
-  Row,
   Popover,
 } from 'native-base';
 import {SiginScreenProps} from '../../../navigation/root/types';
@@ -18,7 +16,6 @@ import FocusedStatusBar from '../../../components/general/statusBar';
 import {TextInputProps} from 'react-native';
 import {Dimensions} from 'react-native';
 import {customColor} from '../../../theme';
-import {color} from 'styled-system';
 import {AuthContext} from '../../../contexts/auth';
 
 type fieldTypes = {

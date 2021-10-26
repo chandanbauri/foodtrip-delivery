@@ -1,7 +1,6 @@
 import {Box, FlatList, Text} from 'native-base';
 import * as React from 'react';
 import {ActivityIndicator, Dimensions, RefreshControl} from 'react-native';
-import AcceptOrderCard from '../../components/cards/acceptedOrder';
 import FocusedStatusBar from '../../components/general/statusBar';
 import {HomeScreenProps} from '../../navigation/tab/types';
 import {useIsFocused} from '@react-navigation/native';
@@ -10,7 +9,7 @@ import auth from '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import {customColor} from '../../theme';
 import RejectedOrder from '../../components/cards/rejected';
-const {height, width} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 const RejectedOrders = ({navigation, route}: HomeScreenProps) => {
   const [initializing, setInitializing] = React.useState<boolean>(true);
   const [list, setList] = React.useState<Array<any>>([]);

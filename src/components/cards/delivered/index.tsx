@@ -1,12 +1,9 @@
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {Box, Button, Divider, Row, Text} from 'native-base';
 import * as React from 'react';
-import {Alert} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {CombinedNavigationProp} from '../../../navigation';
-import {DetailsScreenProps} from '../../../navigation/helper';
 import {customColor} from '../../../theme';
-import {onPickUp, updateOrder} from '../../../utilities';
 
 const DeliveredOrder = (props: any) => {
   const {order} = props;

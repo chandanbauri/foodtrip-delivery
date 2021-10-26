@@ -1,7 +1,6 @@
 import {Box, FlatList, Text} from 'native-base';
 import * as React from 'react';
-import {ActivityIndicator, Dimensions, RefreshControl} from 'react-native';
-import AcceptOrderCard from '../../components/cards/acceptedOrder';
+import {Dimensions, RefreshControl} from 'react-native';
 import FocusedStatusBar from '../../components/general/statusBar';
 import {HomeScreenProps} from '../../navigation/tab/types';
 import {useIsFocused} from '@react-navigation/native';
@@ -11,7 +10,6 @@ import '@react-native-firebase/firestore';
 import {customColor} from '../../theme';
 import DeliveredOrder from '../../components/cards/delivered';
 import Loader from '../../components/general/Loader';
-import moment from 'moment';
 const {height, width} = Dimensions.get('window');
 const CompletedOrders = ({navigation, route}: HomeScreenProps) => {
   const [initializing, setInitializing] = React.useState<boolean>(true);
@@ -39,22 +37,6 @@ const CompletedOrders = ({navigation, route}: HomeScreenProps) => {
             })
             .map(async item => {
               let data = item.data();
-              //   let blob = await firebase
-              //     .app('SECONDARY_APP')
-              //     .firestore()
-              //     .collection('orders')
-              //     .doc(data.orderId)
-              //     .get();
-
-              //   let index = list.findIndex(item => item.docId == blob.id);
-              //   console.log(blob.data());
-              //   if (index == -1)
-              //     setList(prev => {
-              //       return [
-              //         ...prev,
-              //         {...blob.data(), docId: blob.id, reqId: item.id},
-              //       ];
-              //     });
               let index = list.findIndex(value => value.id == item.id);
               if (index == -1)
                 setList(prev => {
@@ -87,22 +69,6 @@ const CompletedOrders = ({navigation, route}: HomeScreenProps) => {
             })
             .map(async item => {
               let data = item.data();
-              //   let blob = await firebase
-              //     .app('SECONDARY_APP')
-              //     .firestore()
-              //     .collection('orders')
-              //     .doc(data.orderId)
-              //     .get();
-
-              //   let index = list.findIndex(item => item.docId == blob.id);
-              //   console.log(blob.data());
-              //   if (index == -1)
-              //     setList(prev => {
-              //       return [
-              //         ...prev,
-              //         {...blob.data(), docId: blob.id, reqId: item.id},
-              //       ];
-              //     });
               let index = list.findIndex(value => value.id == item.id);
               if (index == -1)
                 setList(prev => {
@@ -132,13 +98,6 @@ const CompletedOrders = ({navigation, route}: HomeScreenProps) => {
         barStyle="dark-content"
         translucent={true}
       />
-      {/* <Container w={width} h={height * 0.1}>
-          <Flex w={width} justifyContent="center" alignItems="center">
-            <Text bold fontSize="2xl" color={customColor.brown}>
-              Orders
-            </Text>
-          </Flex>
-        </Container> */}
       <FlatList
         data={list}
         keyExtractor={(item, index) => `${index}`}

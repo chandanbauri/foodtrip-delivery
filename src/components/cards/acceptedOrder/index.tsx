@@ -1,12 +1,11 @@
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {Box, Button, Divider, Row, Text} from 'native-base';
 import * as React from 'react';
 import {Alert} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {CombinedNavigationProp} from '../../../navigation';
-import {DetailsScreenProps} from '../../../navigation/helper';
 import {customColor} from '../../../theme';
-import {onPickUp, updateOrder} from '../../../utilities';
+import {onPickUp} from '../../../utilities';
 
 const AcceptOrderCard = (props: any) => {
   const {order} = props;
@@ -78,8 +77,6 @@ const AcceptOrderCard = (props: any) => {
                 bg={customColor.brown}
                 shadow={2}
                 onPress={async () => {
-                  // updateOrder({state: {isPickedUp, orderId: props.id}});
-                  // setIsPickedUp(() => true);
                   try {
                     if (props.onAction) props.onAction();
                     let res = await onPickUp({
@@ -88,7 +85,6 @@ const AcceptOrderCard = (props: any) => {
                       activeId: order.reqId,
                     });
                     if (res) {
-                      if (props.onActionComplete) props.onActionComplete();
                       Alert.alert(
                         'Order Picked up',
                         'order picked up completed',
@@ -104,8 +100,7 @@ const AcceptOrderCard = (props: any) => {
                         ],
                       );
                     }
-                    // props.onChange();
-                    // console.log(res);
+                    if (props.onActionComplete) props.onActionComplete();
                   } catch (error) {
                     if (props.onActionComplete) props.onActionComplete();
                     Alert.alert('Opps !!', 'Some thing went wrong', [

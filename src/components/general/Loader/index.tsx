@@ -1,6 +1,5 @@
 import {Box, Center, Heading, HStack, Spinner} from 'native-base';
 import * as React from 'react';
-import {customColor} from '../../../theme';
 import FocusedStatusBar from '../statusBar';
 
 export default function Loader() {

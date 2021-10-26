@@ -1,15 +1,9 @@
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
-import {Box, Button, Divider, Row, Text} from 'native-base';
+import {Box, Divider, Row, Text} from 'native-base';
 import * as React from 'react';
-import {Alert} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {CombinedNavigationProp} from '../../../navigation';
-import {DetailsScreenProps} from '../../../navigation/helper';
 import {customColor} from '../../../theme';
-import {onPickUp, updateOrder} from '../../../utilities';
 
 const RejectedOrder: React.FunctionComponent = (props: any) => {
-  const navigation = useNavigation<CombinedNavigationProp>();
   return (
     <Box width="100%" flexGrow={1} rounded={20} my={3} px={4}>
       <Box width="100%" bgColor="white" shadow={2} px={6} py={5} rounded={20}>
@@ -27,80 +21,6 @@ const RejectedOrder: React.FunctionComponent = (props: any) => {
             </Text>
           </Box>
         </Row>
-        {/* <Box w="100%" mt={4}>
-          <Row justifyContent="space-between" alignItems="center">
-            <Button
-              px={10}
-              py={3}
-              bg={customColor.brown}
-              shadow={2}
-              onPress={() => {
-                navigation.navigate('home', {
-                  screen: 'Details',
-                  params: {
-                    order: props,
-                  },
-                });
-              }}>
-              <Text fontSize="xs" color="white">
-                View Details
-              </Text>
-            </Button>
-            {props.isPickedUp ? (
-              props.isDelivered ? (
-                <Button px={10} py={3} bg="gray.300">
-                  <Text fontSize="xs" color="gray.800">
-                    Delivered
-                  </Text>
-                </Button>
-              ) : (
-                <Button px={10} py={3} bg="fuchsia.500" shadow={2}>
-                  <Text
-                    fontSize="xs"
-                    color="white"
-                    onPress={() => {
-                      navigation.navigate('home', {
-                        screen: 'Delivery',
-                        params: {order: props},
-                      });
-                    }}>
-                    Delivered
-                  </Text>
-                </Button>
-              )
-            ) : (
-              <Button
-                px={10}
-                py={3}
-                bg={customColor.brown}
-                shadow={2}
-                onPress={async () => {
-                  // updateOrder({state: {isPickedUp, orderId: props.id}});
-                  // setIsPickedUp(() => true);
-                  try {
-                    await onPickUp({
-                      user: props.useDetails,
-                      orderId: props.docId,
-                      activeId: props.reqId,
-                    });
-                    props.onChange();
-                  } catch (error) {
-                    Alert.alert('Opps !!', 'Some thing went wrong', [
-                      {
-                        text: 'Ok',
-                        onPress: () => {},
-                      },
-                    ]);
-                    throw error;
-                  }
-                }}>
-                <Text fontSize="xs" color="white">
-                  Pick up
-                </Text>
-              </Button>
-            )}
-          </Row>
-        </Box> */}
       </Box>
     </Box>
   );

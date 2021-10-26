@@ -2,7 +2,6 @@ import {Box, Text} from 'native-base';
 import * as React from 'react';
 import {ActivityIndicator, Dimensions, FlatList} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {flexGrow} from 'styled-system';
 import NotificationCard from '../../components/cards/Notification';
 import FocusedStatusBar from '../../components/general/statusBar';
 import {useIsFocused} from '@react-navigation/native';
@@ -10,11 +9,8 @@ import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import {customColor} from '../../theme';
-const {height, width} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 function NotificationScreen() {
-  let data = Array.apply(null, Array(8)).map(
-    (item, index: number) => `item ${index}`,
-  );
   const [initializing, setInitializing] = React.useState<boolean>(true);
   const [list, setList] = React.useState<Array<any>>([]);
   let IsFocused = useIsFocused();
@@ -52,18 +48,6 @@ function NotificationScreen() {
       throw error;
     }
   };
-  // const saveFCMToken = async () => {
-  //   if (IsFocused) {
-  //     try {
-  //       let res = await addFCMtoke({FCM: await getFCMToken()});
-  //       console.log(res);
-  //     } catch (error) {
-  //       throw error;
-  //     }
-  //   }
-
-  //   return;
-  // };
   React.useEffect(() => {
     if (IsFocused) {
       getOrders().catch(error => {
@@ -73,12 +57,6 @@ function NotificationScreen() {
     return;
   }, [IsFocused]);
 
-  // React.useEffect(() => {
-  //   saveFCMToken().catch(error => {
-  //     throw error;
-  //   });
-  //   return;
-  // }, []);
   if (initializing)
     return (
       <Box alignItems="center" justifyContent="center" flex={1}>
@@ -124,7 +102,6 @@ function NotificationScreen() {
           </Box>
         }
       />
-      {/* </Box> */}
     </>
   );
 }
