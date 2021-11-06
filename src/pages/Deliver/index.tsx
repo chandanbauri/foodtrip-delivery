@@ -81,8 +81,8 @@ function DeliveryScreen({route, navigation}: DeliveryScreenProps) {
                 if (response.succees) {
                   setInitializing(false);
                   Alert.alert(
-                    'Hurray !!!',
-                    'You Have Successfully Delivered Happiness',
+                    'Delivery Complete !!',
+                    'Pull down to refresh the page for next order.',
                     [
                       {
                         text: 'SURE !',

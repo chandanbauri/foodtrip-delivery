@@ -1,4 +1,4 @@
-import {Box, Button, Center, FlatList, Spinner, Text} from 'native-base';
+import {Box, Button, Center, FlatList, Text} from 'native-base';
 import * as React from 'react';
 import {Dimensions, RefreshControl} from 'react-native';
 
@@ -15,10 +15,10 @@ import {requestNotificationPermission} from '../../utilities/permissions/permiss
 import Loader from '../../components/general/Loader';
 import {AuthContext} from '../../contexts/auth';
 
-const {height, width} = Dimensions.get('window');
-const HomeScreen = ({navigation, route}: HomeScreenProps) => {
+const {width} = Dimensions.get('window');
+const HomeScreen = ({}: HomeScreenProps) => {
   const [initializing, setInitializing] = React.useState<boolean>(true);
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing] = React.useState(false);
   const [list, setList] = React.useState<Array<any>>([]);
   const startInitializing = () => setInitializing(true);
   const stopInitializing = () => {
