@@ -81,11 +81,11 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
         </Row>
       </Box>
       <Box paddingY={5} w="100%" maxWidth={width}>
-        <Row w="100%" justifyContent="space-between" alignItems="center">
-          <Box>
-            <Text fontSize="lg" fontWeight="700" color={customColor.brown}>
-              {`${order.userDetails.name}`}
-            </Text>
+        <Box>
+          <Text fontSize="lg" fontWeight="700" color={customColor.brown}>
+            {`${order.userDetails.name}`}
+          </Text>
+          <Row justifyContent="space-between" alignItems="center" flexGrow={1}>
             <Text
               fontSize="sm"
               fontWeight="700"
@@ -93,21 +93,21 @@ export default function DetailsScreen({route, navigation}: DetailsScreenProps) {
               color={customColor.brown}>
               {`${order.userDetails.phone}`}
             </Text>
-            <Text fontSize="xs" mt={2} color={customColor.gray}>
-              {`${order.userDetails.deliveryAddress}`}
-            </Text>
-            <Text fontSize="xs" mt={2} color={customColor.gray}>
-              {`${
-                order.placedAt
-                  ? moment(order.placedAt).format('DD/MM/YYYY HH:mm')
-                  : ''
-              }`}
-            </Text>
-          </Box>
-          <Pressable style={{padding: 5}} onPress={() => makeCall()}>
-            <Ionicons name="call" size={24} color={customColor.brown} />
-          </Pressable>
-        </Row>
+            <Pressable style={{padding: 5}} onPress={() => makeCall()}>
+              <Ionicons name="call" size={24} color={customColor.brown} />
+            </Pressable>
+          </Row>
+          <Text fontSize="xs" mt={2} color={customColor.gray}>
+            {`${order.userDetails.deliveryAddress}`}
+          </Text>
+          <Text fontSize="xs" mt={2} color={customColor.gray}>
+            {`${
+              order.placedAt
+                ? moment(order.placedAt).format('DD/MM/YYYY HH:mm')
+                : ''
+            }`}
+          </Text>
+        </Box>
       </Box>
       <Box>
         <Text fontWeight="700" fontSize="xl" color={customColor.brown} mb={2}>
